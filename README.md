@@ -1,7 +1,7 @@
 wq.start: Project template and scaffolding tools
 ================================
 
-`wq.start` provides the recommended Django project template for projects utilizing the [wq framework], with [wq.app] for the front end and [wq.db] as the backend component.  `wq.start` also provides commands for generating a default set of offline-capable list, detail, and edit templates.  The templates can be generated for existing Django models (via `wq maketemplates`), or both the models and the templates can be generated from an ODK-style [XLSForm](http://xlsform.org) (via `wq addform`).
+`wq.start` provides a simple command-line interface (`wq start`) for starting a new project with the [wq framework], with [wq.app] for the front end and [wq.db] as the backend component.  `wq.start` also provides commands for generating a default set of offline-capable list, detail, and edit templates.  The templates can be generated for existing Django models (via `wq maketemplates`), or both the models and the templates can be generated from an ODK-style [XLSForm](http://xlsform.org) (via `wq addform`).
 
 ### Usage
 
@@ -12,22 +12,18 @@ cd <projectname>/db
 wq addform ~/my-odk-form.xlsx
 ```
 
-Se the [Getting Started] docs for more information.
+See the [Getting Started] docs for more information.
 
-### Rationale
+### Commands
 
-This project template is also useful as an example of how to build a web app with [RequireJS] and a [Django REST Framework] backend.  It differs from the default Django project template in a few key ways:
+ * `wq start <projectname> [directory]`: Create a new Django project (from the [wq Django template])
+ * `wq addform ~/myodk-form.xlsx`: Create a new Django app from the provided XLSForm (uses [xlsform-converter])
+ * `wq maketemplates`: Create templates for Django models registered with [wq.db.rest]
 
- * A default Apache2 WSGI configuration is included in `conf/`
- * All static files are kept in the `app/` folder, with the idea that they will be built with a RequireJS-powered [build process].  This clean separation between the front end and backend components makes it easier to wrap the front end in [PhoneGap] for release on app stores.
- * Because of this separation, the root of the Django project is in `db/` rather than at the top level of the project.  `db/` is included on the Python path in the Apache config (and implicitly when running `./manage.py`).
- * Mustache templates are kept at the top level, because they are [shared between the client and the server](http://wq.io/docs/templates).
-
-[wq framework]: http://wq.io/
-[wq.app]: http://wq.io/wq.app
-[wq.db]: http://wq.io/wq.db
+[wq framework]: https://wq.io/
+[wq.app]: https://wq.io/wq.app
+[wq.db]: https://wq.io/wq.db
+[wq Django template]: https://github.com/wq/wq-django-template
+[xlsform-converter]: https://github.com/wq/xlsform-converter
 [Getting Started]: https://wq.io/docs/setup
-[RequireJS]: http://requirejs.org
-[Django REST Framework]: http://www.django-rest-framework.org
-[build process]: http://wq.io/docs/build
-[PhoneGap]: http://phonegap.com
+[wq.db.rest]: https://wq.io/docs/about-rest
