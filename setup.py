@@ -2,7 +2,7 @@ import os
 from setuptools import setup
 
 LONG_DESCRIPTION = """
-Django project template for building REST-ful web & hybrid apps with wq.app and wq.db.
+Project scaffolding tools for creating a new crowdsourcing or citizen science application with the wq framework.
 """
 
 
@@ -58,7 +58,6 @@ create_wq_namespace()
 # Template data (currently only one project template)
 TEMPLATES = [
     'django_project',
-    'master_templates',
 ]
 TEMPLATE_DATA = []
 for folder in TEMPLATES:
@@ -66,10 +65,10 @@ for folder in TEMPLATES:
 
 setup(
     name='wq.start',
-    version='1.0.0-dev',
+    version='1.0.0b1',
     author='S. Andrew Sheppard',
     author_email='andrew@wq.io',
-    url='http://wq.io/',
+    url='https://wq.io/wq.start',
     license='MIT',
     description=LONG_DESCRIPTION.strip(),
     long_description=parse_markdown_readme(),
