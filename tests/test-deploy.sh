@@ -32,7 +32,7 @@ test_project/db/manage.py dump_config > output/config3.json
 
 # Create database tables
 cd test_project/db
-/usr/lib/postgresql/9.5/bin/dropdb -Upostgres test_project --if-exists
+dropdb -Upostgres test_project --if-exists
 createdb -Upostgres test_project
 psql -Upostgres test_project -c "CREATE EXTENSION postgis";
 sed -i "s/'USER': 'test_project'/'USER': 'postgres'/" test_project/local_settings.py
