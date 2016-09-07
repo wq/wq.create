@@ -1,10 +1,13 @@
 #!/bin/bash
 set -e
 
-# Cleanup
+# Cleanup and initialize
 rm -rf test_project
 rm -rf output
 mkdir output
+dropdb -Upostgres test_project --if-exists
+createdb -Upostgres test_project
+psql -Upostgres test_project -c "CREATE EXTENSION postgis";
 
 # wq start: Create new project and verify empty config
 rm -rf test_project
@@ -37,9 +40,6 @@ test_project/db/manage.py dump_config > output/config3.json
 
 # Create database tables
 cd test_project/db
-dropdb -Upostgres test_project --if-exists
-createdb -Upostgres test_project
-psql -Upostgres test_project -c "CREATE EXTENSION postgis";
 ./manage.py makemigrations location observation
 ./manage.py migrate
 cd ../../
