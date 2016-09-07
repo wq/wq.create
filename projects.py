@@ -4,7 +4,7 @@ import os
 import shutil
 from django.core.management import call_command
 from pkg_resources import resource_filename
-from .info import print_versions
+from wq.core.info import print_versions
 
 
 template = resource_filename('wq.start', 'django_project')
