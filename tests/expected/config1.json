@@ -1,0 +1,12 @@
+{
+    "pages": {
+        "login": {
+            "name": "login",
+            "url": "login"
+        },
+        "logout": {
+            "name": "logout",
+            "url": "logout"
+        }
+    }
+}

@@ -1,0 +1,88 @@
+{
+    "pages": {
+        "location": {
+            "name": "location",
+            "url": "locations",
+            "list": true,
+            "form": [
+                {
+                    "hint": "The unique name of the site",
+                    "name": "name",
+                    "type": "string",
+                    "label": "Site Name",
+                    "bind": {
+                        "required": true
+                    }
+                },
+                {
+                    "hint": "Site classification",
+                    "name": "type",
+                    "choices": [
+                        {
+                            "name": "water",
+                            "label": "Water"
+                        },
+                        {
+                            "name": "air",
+                            "label": "Air"
+                        },
+                        {
+                            "name": "land",
+                            "label": "Land"
+                        }
+                    ],
+                    "type": "select1",
+                    "label": "Site Type",
+                    "bind": {
+                        "required": true
+                    }
+                },
+                {
+                    "hint": "The location of the site",
+                    "name": "geometry",
+                    "type": "geoshape",
+                    "label": "Location",
+                    "bind": {
+                        "required": true
+                    }
+                }
+            ],
+            "map": {
+                "edit": {
+                    "layers": [
+                        {
+                            "type": "geojson",
+                            "url": "locations/{{id}}/edit.geojson",
+                            "name": "geometry",
+                            "flatten": true,
+                            "geometryField": "geometry",
+                            "draw": {
+                                "marker": {},
+                                "circle": false,
+                                "polyline": false,
+                                "rectangle": false,
+                                "polygon": false
+                            }
+                        }
+                    ]
+                },
+                "list": {
+                    "layers": [],
+                    "autoLayers": true
+                },
+                "detail": {
+                    "layers": [],
+                    "autoLayers": true
+                }
+            }
+        },
+        "login": {
+            "name": "login",
+            "url": "login"
+        },
+        "logout": {
+            "name": "logout",
+            "url": "logout"
+        }
+    }
+}

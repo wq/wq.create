@@ -1,0 +1,120 @@
+{
+    "pages": {
+        "location": {
+            "name": "location",
+            "url": "locations",
+            "list": true,
+            "form": [
+                {
+                    "hint": "The unique name of the site",
+                    "name": "name",
+                    "type": "string",
+                    "label": "Site Name",
+                    "bind": {
+                        "required": true
+                    }
+                },
+                {
+                    "hint": "Site classification",
+                    "name": "type",
+                    "choices": [
+                        {
+                            "name": "water",
+                            "label": "Water"
+                        },
+                        {
+                            "name": "air",
+                            "label": "Air"
+                        },
+                        {
+                            "name": "land",
+                            "label": "Land"
+                        }
+                    ],
+                    "type": "select1",
+                    "label": "Site Type",
+                    "bind": {
+                        "required": true
+                    }
+                },
+                {
+                    "hint": "The location of the site",
+                    "name": "geometry",
+                    "type": "geoshape",
+                    "label": "Location",
+                    "bind": {
+                        "required": true
+                    }
+                }
+            ],
+            "map": {
+                "edit": {
+                    "layers": [
+                        {
+                            "type": "geojson",
+                            "url": "locations/{{id}}/edit.geojson",
+                            "name": "geometry",
+                            "flatten": true,
+                            "geometryField": "geometry",
+                            "draw": {
+                                "marker": {},
+                                "circle": false,
+                                "polyline": false,
+                                "rectangle": false,
+                                "polygon": false
+                            }
+                        }
+                    ]
+                },
+                "list": {
+                    "layers": [],
+                    "autoLayers": true
+                },
+                "detail": {
+                    "layers": [],
+                    "autoLayers": true
+                }
+            }
+        },
+        "observation": {
+            "name": "observation",
+            "url": "observations",
+            "list": true,
+            "form": [
+                {
+                    "hint": "The date when the observation was taken",
+                    "name": "date",
+                    "type": "date",
+                    "label": "Date"
+                },
+                {
+                    "name": "photo",
+                    "type": "binary",
+                    "hint": "Photo of the site",
+                    "label": "Photo"
+                },
+                {
+                    "hint": "Field observations and notes",
+                    "name": "notes",
+                    "type": "string",
+                    "label": "Notes"
+                },
+                {
+                    "hint": "The site where the observation was taken",
+                    "name": "location",
+                    "type": "string",
+                    "wq:ForeignKey": "location",
+                    "label": "Site"
+                }
+            ]
+        },
+        "login": {
+            "name": "login",
+            "url": "login"
+        },
+        "logout": {
+            "name": "logout",
+            "url": "logout"
+        }
+    }
+}

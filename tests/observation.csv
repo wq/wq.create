@@ -1,0 +1,6 @@
+survey,,,,,
+,type,name,label,hint,constraint
+,string,location,Site,The site where the observation was taken,wq:ForeignKey("location.Location")
+,date,date,Date,The date when the observation was taken,
+,photo,photo,Photo,Photo of the site,
+,text,notes,Notes,Field observations and notes,

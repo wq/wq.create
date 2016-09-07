@@ -1,0 +1,10 @@
+survey,,,,,
+,type,name,label,hint,required
+,string,name,Site Name,The unique name of the site,true
+,select one types,type,Site Type,Site classification,true
+,geopoint,geometry,Location,The location of the site,true
+choices,,,,,
+,list name,name,label
+,types,water,Water
+,types,air,Air
+,types,land,Land
