@@ -69,6 +69,11 @@ def addform(xlsform, input_dir, django_dir, template_dir,
         os.mkdir(os.path.join(django_dir, form_name))
 
     create_file(
+        [django_dir, form_name, '__init__.py'],
+        ""
+    )
+
+    create_file(
         [django_dir, form_name, 'models.py'],
         xls2django(xlsform, 'models')
     )
