@@ -15,7 +15,8 @@ env:
   matrix:
    - DJANGO="django==1.8.14"
    - DJANGO="django==1.9.9"
-   - DJANGO="django==1.9.9" LINT=1
+   - DJANGO="django==1.10.1"
+   - DJANGO="django==1.10.1" LINT=1
 install:
  - pip install $DJANGO
  - pip install $DRF
