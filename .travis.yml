@@ -7,6 +7,8 @@ python:
 env:
   global:
    - DRF="djangorestframework==3.4.6"
+   - WQ_APP="wq.app==1.0.0b1"
+   - WQ_DB="wq.db==1.0.0b1"
   matrix:
    - DJANGO="django==1.8.14"
    - DJANGO="django==1.9.9"
@@ -14,6 +16,8 @@ env:
 install:
  - pip install $DJANGO
  - pip install $DRF
+ - pip install $WQ_APP
+ - pip install $WQ_DB
  - pip install flake8
  - pip install .
 script:
