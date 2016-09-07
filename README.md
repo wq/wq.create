@@ -3,6 +3,17 @@ wq.start: Project template and scaffolding tools
 
 `wq.start` provides a simple command-line interface (`wq start`) for starting a new project with the [wq framework], with [wq.app] for the front end and [wq.db] as the backend component.  `wq.start` also provides commands for generating a default set of offline-capable list, detail, and edit templates.  The templates can be generated for existing Django models (via `wq maketemplates`), or both the models and the templates can be generated from an ODK-style [XLSForm](http://xlsform.org) (via `wq addform`).
 
+[![Latest PyPI Release](https://img.shields.io/pypi/v/wq.start.svg)](https://pypi.python.org/pypi/wq.start)
+[![Release Notes](https://img.shields.io/github/release/wq/wq.start.svg)](https://github.com/wq/wq.start/releases)
+[![License](https://img.shields.io/pypi/l/wq.start.svg)](https://wq.io/license)
+[![GitHub Stars](https://img.shields.io/github/stars/wq/wq.start.svg)](https://github.com/wq/wq.start/stargazers)
+[![GitHub Forks](https://img.shields.io/github/forks/wq/wq.start.svg)](https://github.com/wq/wq.start/network)
+[![GitHub Issues](https://img.shields.io/github/issues/wq/wq.start.svg)](https://github.com/wq/wq.start/issues)
+
+[![Travis Build Status](https://img.shields.io/travis/wq/wq.start/master.svg)](https://travis-ci.org/wq/wq.start)
+[![Python Support](https://img.shields.io/pypi/pyversions/wq.start.svg)](https://pypi.python.org/pypi/wq.start)
+[![Django Support](https://img.shields.io/badge/Django-1.8%2C%201.9-blue.svg)](https://pypi.python.org/pypi/wq.start)
+
 ### Usage
 
 ```sh
