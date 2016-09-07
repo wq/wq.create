@@ -51,7 +51,8 @@ if os.sep not in templates:
 def addform(xlsform, input_dir, django_dir, template_dir,
             form_name, with_admin):
     """
-    Convert an XLSForm into a wq-compatible Django app, including:
+    Convert an XLSForm into a Django app for wq.  Generates Python and mustache
+    files including:
 
     \b
         db/[form_name]/models.py
@@ -139,7 +140,8 @@ def addform(xlsform, input_dir, django_dir, template_dir,
 )
 def maketemplates(input_dir, django_dir, template_dir, overwrite):
     """
-    Generate Mustache templates for all wq.db-registered models.
+    Generate mustache templates for wq.db.rest.  Automatically discovers all
+    registered models through ./manage.py dump_config.
 
     \b
         templates/[model_name]_detail.html
