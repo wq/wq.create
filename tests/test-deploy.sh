@@ -13,6 +13,7 @@ if [ `python -c 'import sys; print(sys.version_info[0])'` == "2" ]
 then
    sed -i "s/python3/python/" test_project/db/manage.py
 fi
+sed -i "s/'USER': 'test_project'/'USER': 'postgres'/" test_project/db/test_project/local_settings.py
 test_project/db/manage.py dump_config > output/config1.json
 ./json-compare.py expected/config1.json output/config1.json
 
@@ -39,7 +40,6 @@ cd test_project/db
 dropdb -Upostgres test_project --if-exists
 createdb -Upostgres test_project
 psql -Upostgres test_project -c "CREATE EXTENSION postgis";
-sed -i "s/'USER': 'test_project'/'USER': 'postgres'/" test_project/local_settings.py
 ./manage.py makemigrations location observation
 ./manage.py migrate
 cd ../../

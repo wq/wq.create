@@ -30,13 +30,16 @@ def start(project_name, destination):
 
     See https://wq.io/docs/setup for more tips on getting started with wq.
     """
-    call_command(
-        'startproject',
-        project_name,
-        destination,
+    args = [project_name]
+    if destination:
+        args.append(destination)
+
+    kwargs = dict(
         template=template,
         extensions=["py", "yml", "conf", "html", "sh", "js", "css", "json"],
     )
+
+    call_command('startproject', *args, **kwargs)
     path = destination or project_name
     txt = os.path.join(path, 'requirements.txt')
     print_versions(txt, [
