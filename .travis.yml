@@ -8,7 +8,7 @@ addons:
   postgresql: "9.4"
 env:
   global:
-   - DRF="djangorestframework==3.4.6"
+   - DRF="djangorestframework==3.5.1"
    - WQ_CORE="wq.core==1.0.0b1"
    - WQ_APP="wq.app==1.0.0b1"
    - WQ_DB="wq.db==1.0.0b1"
@@ -24,6 +24,7 @@ install:
  - pip install $WQ_APP
  - pip install $WQ_DB
  - pip install flake8 psycopg2 pillow
+ - pip install https://github.com/wq/xlsform-converter/archive/master.zip
  - pip install .
 script:
  - ./runtests.sh
