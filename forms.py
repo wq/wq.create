@@ -159,8 +159,10 @@ def maketemplates(input_dir, django_dir, template_dir, overwrite):
 
         def process_fields(fields):
             for field in fields:
-                if field['type'] in ('repeat',):
+                if field['type'] in ('repeat', 'group'):
                     field['wq:nested'] = True
+                    if field['type'] == 'repeat':
+                        field['wq:many'] = True
                     process_fields(field['children'])
                 else:
                     field['type_info'] = {'bind': {'type': field['type']}}
