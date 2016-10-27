@@ -8,7 +8,7 @@ addons:
   postgresql: "9.4"
 env:
   global:
-   - DRF="djangorestframework==3.5.1"
+   - DRF="https://github.com/tomchristie/django-rest-framework/archive/master.zip"
    - WQ_CORE="wq.core==1.0.0b1"
    - WQ_APP="wq.app==1.0.0b1"
    - WQ_DB="https://github.com/wq/wq.db/archive/master.zip"
