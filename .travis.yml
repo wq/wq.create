@@ -11,7 +11,7 @@ env:
    - DRF="djangorestframework==3.5.1"
    - WQ_CORE="wq.core==1.0.0b1"
    - WQ_APP="wq.app==1.0.0b1"
-   - WQ_DB="wq.db==1.0.0b1"
+   - WQ_DB="https://github.com/wq/wq.db/archive/master.zip"
   matrix:
    - DJANGO="django==1.8.14"
    - DJANGO="django==1.9.9"
