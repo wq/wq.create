@@ -176,11 +176,21 @@ def maketemplates(input_dir, django_dir, template_dir, overwrite):
         context['form']['urlpath'] = page['url']
 
         template_types = set(['detail', 'edit', 'list'])
+
+        has_geo = False
         for field in page['form']:
             if 'geo' in field['type']:
-                if 'popup' in template_types:
+                if has_geo:
                     print("Warning: multiple geometry fields found.")
-                template_types.add('popup')
+                has_geo = True
+
+        if page.get('map', None):
+            has_geo = True
+
+        if has_geo:
+            context['form']['has_geo'] = True
+            template_types.add('popup')
+
         for tmpl in template_types:
             create_file(
                 [template_dir, "%s_%s.html" % (page['name'], tmpl)],
