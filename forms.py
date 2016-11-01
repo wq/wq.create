@@ -175,7 +175,7 @@ def maketemplates(input_dir, django_dir, template_dir, overwrite):
         })
         context['form']['urlpath'] = page['url']
 
-        template_types = set(['detail', 'edit', 'list'])
+        template_types = set(page.get('modes', ['detail', 'edit', 'list']))
 
         has_geo = False
         for field in page['form']:
