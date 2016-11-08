@@ -17,6 +17,7 @@ then
    sed -i "s/python3/python/" test_project/db/manage.py
 fi
 sed -i "s/'USER': 'test_project'/'USER': 'postgres'/" test_project/db/test_project/local_settings.py
+sed -i "s/ALLOWED_HOSTS/# ALLOWED_HOSTS/" test_project/db/test_project/settings.py
 test_project/db/manage.py migrate
 test_project/db/manage.py dump_config > output/config1.json
 ./json-compare.py expected/config1.json output/config1.json
