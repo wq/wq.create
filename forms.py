@@ -108,7 +108,7 @@ def addform(xlsform, input_dir, django_dir, template_dir,
     for tmpl in template_types:
         create_file(
             [template_dir, "%s_%s.html" % (form_name, tmpl)],
-            xls2html(xlsform, tmpl),
+            xls2html(xlsform, os.path.join(input_dir, "%s.html" % tmpl)),
         )
 
 
