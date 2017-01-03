@@ -6,6 +6,7 @@ from pkg_resources import resource_filename
 import subprocess
 import json
 from difflib import unified_diff
+from pyxform.question_type_dictionary import QUESTION_TYPE_DICT as QTYPES
 
 
 templates = resource_filename('wq.start', 'master_templates')
@@ -164,6 +165,8 @@ def maketemplates(input_dir, django_dir, template_dir, overwrite):
                     if field['type'] == 'repeat':
                         field['wq:many'] = True
                     process_fields(field['children'])
+                elif field['type'] in QTYPES:
+                    field['type_info'] = QTYPES[field['type']]
                 else:
                     field['type_info'] = {'bind': {'type': field['type']}}
 
