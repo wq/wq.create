@@ -11,7 +11,7 @@ psql -Upostgres test_project -c "CREATE EXTENSION postgis";
 
 # wq start: Create new project and verify empty config
 rm -rf test_project
-wq start test_project
+wq start test_project -d test.wq.io
 if [ `python -c 'import sys; print(sys.version_info[0])'` == "2" ]
 then
    sed -i "s/python3/python/" test_project/db/manage.py

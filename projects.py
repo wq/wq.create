@@ -3,6 +3,7 @@ import click
 import os
 import shutil
 from django.core.management import call_command
+from django.core.management.commands import startproject
 from pkg_resources import resource_filename
 from wq.core.info import print_versions
 
@@ -14,10 +15,23 @@ if os.sep not in template:
     template = wq_module.__path__[0] + os.sep + template
 
 
+class StartProjectCommand(startproject.Command):
+    def add_arguments(self, parser):
+        super(StartProjectCommand, self).add_arguments(parser)
+        parser.add_argument('--domain', help="Web Domain")
+        parser.add_argument('--app-id', help="App Identifier")
+
+
 @wq.command()
 @click.argument("project_name", required=True)
 @click.argument("destination", required=False)
-def start(project_name, destination):
+@click.option(
+    "-d", "--domain", required=True, help='Web domain (e.g. example.wq.io)'
+)
+@click.option(
+    "-i", "--app-id", help="Application ID (e.g. io.wq.example)"
+)
+def start(project_name, destination, domain=None, app_id=None):
     """
     Start a new project with wq.app and wq.db.  A new Django project will be
     created from a wq-specific template.  After running this command, you may
@@ -30,16 +44,21 @@ def start(project_name, destination):
 
     See https://wq.io/docs/setup for more tips on getting started with wq.
     """
+
+    if app_id is None:
+        app_id = '.'.join(reversed(domain.split('.')))
+
     args = [project_name]
     if destination:
         args.append(destination)
-
     kwargs = dict(
         template=template,
-        extensions=["py", "yml", "conf", "html", "sh", "js", "css", "json"],
+        extensions="py,yml,conf,html,sh,js,css,json,xml".split(","),
+        domain=domain,
+        app_id=app_id,
     )
+    call_command(StartProjectCommand(), *args, **kwargs)
 
-    call_command('startproject', *args, **kwargs)
     path = destination or project_name
     txt = os.path.join(path, 'requirements.txt')
     print_versions(txt, [
