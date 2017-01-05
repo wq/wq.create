@@ -49,7 +49,10 @@ def list_package_data(root):
     """
     paths = []
     for base, dirs, files in os.walk(root):
-        paths.extend([os.path.join(base, name) for name in files])
+        paths.extend([
+            os.path.join(base, name) for name in files
+            if name not in ('.git',)
+        ])
     return paths
 
 
