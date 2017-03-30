@@ -24,27 +24,19 @@ test_project/db/manage.py dump_config > output/config1.json
 
 # wq addform: Add a single form and verify changed config
 cd test_project/db
-wq addform ../../location.csv
+wq addform -f ../../location.csv
 sed -i "s/class Meta:/def __str__(self):\n        return self.name\n\n    class Meta:/" location/models.py
-sed -i "s/# Project apps/# Project apps\n    'location',/" test_project/settings.py
 cd ../../
 test_project/db/manage.py dump_config > output/config2.json
 ./json-compare.py expected/config2.json output/config2.json
 
 # wq addform: Add a second form that references the first
 cd test_project/db
-wq addform ../../observation.csv
+wq addform -f ../../observation.csv
 sed -i "s/class Meta:/def __str__(self):\n        return '%s on %s' % (self.location, self.date)\n\n    class Meta:/" observation/models.py
-sed -i "s/'location',/'location',\n    'observation',/" test_project/settings.py
 cd ../../
 test_project/db/manage.py dump_config > output/config3.json
 ./json-compare.py expected/config3.json output/config3.json
-
-# Create database tables
-cd test_project/db
-./manage.py makemigrations location observation
-./manage.py migrate
-cd ../../
 
 # Enable anonymous submissions and start webserver
 cd test_project/db

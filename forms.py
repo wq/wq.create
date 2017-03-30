@@ -49,8 +49,14 @@ if os.sep not in templates:
     default=False,
     help="Generate admin.py",
 )
+@click.option(
+    "--force", "-f",
+    is_flag=True,
+    default=False,
+    help="Answer yes to all prompts",
+)
 def addform(xlsform, input_dir, django_dir, template_dir,
-            form_name, with_admin):
+            form_name, with_admin, force):
     """
     Convert an XLSForm into a Django app for wq.  Generates Python and mustache
     files including:
@@ -75,17 +81,20 @@ def addform(xlsform, input_dir, django_dir, template_dir,
 
     create_file(
         [django_dir, form_name, '__init__.py'],
-        ""
+        "",
+        overwrite=force,
     )
 
     create_file(
         [django_dir, form_name, 'migrations', '__init__.py'],
-        ""
+        "",
+        overwrite=force,
     )
 
     create_file(
         [django_dir, form_name, 'models.py'],
-        xls2django(xlsform, 'models')
+        xls2django(xlsform, 'models'),
+        overwrite=force,
     )
 
     has_nested = False
@@ -96,16 +105,19 @@ def addform(xlsform, input_dir, django_dir, template_dir,
         create_file(
             [django_dir, form_name, 'serializers.py'],
             xls2django(xlsform, 'serializers'),
+            overwrite=force,
         )
 
     create_file(
         [django_dir, form_name, 'rest.py'],
         xls2django(xlsform, 'rest'),
+        overwrite=force,
     )
     if with_admin:
         create_file(
             [django_dir, form_name, 'admin.py'],
             xls2django(xlsform, 'admin'),
+            overwrite=force,
         )
 
     template_types = set(['detail', 'edit', 'list'])
@@ -118,6 +130,7 @@ def addform(xlsform, input_dir, django_dir, template_dir,
         create_file(
             [template_dir, "%s_%s.html" % (form_name, tmpl)],
             xls2html(xlsform, os.path.join(input_dir, "%s.html" % tmpl)),
+            overwrite=force,
         )
 
     settings_path = None
@@ -146,14 +159,16 @@ def addform(xlsform, input_dir, django_dir, template_dir,
                 if '"%s"' % form_name in row or "'%s'" % form_name in row:
                     has_app = True
         new_settings.append(row)
-    create_file(settings_path, "".join(new_settings), show_diff=True)
+    create_file(
+        settings_path, "".join(new_settings), overwrite=force, show_diff=True
+    )
     result = subprocess.check_output(
         [os.path.join(django_dir, 'manage.py'), 'makemigrations']
     ).decode('utf-8').strip()
     print(result)
     if 'No changes' in result:
         return
-    migrate = click.confirm("Update database schema?", default=True)
+    migrate = force or click.confirm("Update database schema?", default=True)
     if not migrate:
         return
     subprocess.call(
