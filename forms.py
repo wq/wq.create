@@ -70,8 +70,16 @@ def addform(xlsform, input_dir, django_dir, template_dir,
     if not os.path.exists(os.path.join(django_dir, form_name)):
         os.mkdir(os.path.join(django_dir, form_name))
 
+    if not os.path.exists(os.path.join(django_dir, form_name, 'migrations')):
+        os.mkdir(os.path.join(django_dir, form_name, 'migrations'))
+
     create_file(
         [django_dir, form_name, '__init__.py'],
+        ""
+    )
+
+    create_file(
+        [django_dir, form_name, 'migrations', '__init__.py'],
         ""
     )
 
@@ -111,6 +119,46 @@ def addform(xlsform, input_dir, django_dir, template_dir,
             [template_dir, "%s_%s.html" % (form_name, tmpl)],
             xls2html(xlsform, os.path.join(input_dir, "%s.html" % tmpl)),
         )
+
+    settings_path = None
+    for path, dirs, files in os.walk(django_dir):
+        for filename in files:
+            if filename == 'settings.py':
+                settings_path = (path, filename)
+
+    if not settings_path:
+        return
+
+    new_settings = []
+    app_section = False
+    has_app = False
+    for row in open(os.path.join(*settings_path)):
+        if 'INSTALLED_APPS' in row:
+            app_section = True
+        elif app_section:
+            if ')' in row or ']' in row:
+                app_section = False
+                if not has_app:
+                    new_settings.append(
+                        "    '%s',%s" % (form_name, os.linesep)
+                    )
+            else:
+                if '"%s"' % form_name in row or "'%s'" % form_name in row:
+                    has_app = True
+        new_settings.append(row)
+    create_file(settings_path, "".join(new_settings), show_diff=True)
+    result = subprocess.check_output(
+        [os.path.join(django_dir, 'manage.py'), 'makemigrations']
+    ).decode('utf-8').strip()
+    print(result)
+    if 'No changes' in result:
+        return
+    migrate = click.confirm("Update database schema?", default=True)
+    if not migrate:
+        return
+    subprocess.call(
+        [os.path.join(django_dir, 'manage.py'), 'migrate']
+    )
 
 
 @wq.command()
@@ -202,18 +250,39 @@ def maketemplates(input_dir, django_dir, template_dir, overwrite):
             )
 
 
-def create_file(path, contents, overwrite=False):
+def create_file(path, contents, overwrite=False, show_diff=False):
     filename = os.path.join(*path)
     if os.path.exists(filename) and not overwrite:
         existing_file = open(filename, 'r')
         existing_content = existing_file.read()
         if existing_content.strip() == contents.strip():
             return
+
+        def print_diff():
+            diff = unified_diff(
+                existing_content.split('\n'),
+                contents.split('\n'),
+                fromfile="%s (current)" % path[-1],
+                tofile="%s (new)" % path[-1],
+            )
+            for row in diff:
+                print(row)
+
+        if show_diff:
+            print_diff()
+            message = "Update %s? [Y/n/d/?]"
+            default_choice = 'y'
+        else:
+            message = "%s already exists; overwrite? [y/n/d/?]"
+            default_choice = None
+
         choice = ''
         while choice.lower() not in ('y', 'n'):
             choice = click.prompt(
-                '%s already exists; overwrite? [y/n/d/?]' % path[-1]
+                message % path[-1], default=default_choice, show_default=False
             )
+            if choice == '' and show_diff:
+                choice = 'y'
             if choice.lower() == 'n':
                 return
             elif choice.lower() == '?':
@@ -224,14 +293,7 @@ def create_file(path, contents, overwrite=False):
                     '  ? - show help'
                 )
             elif choice.lower() == 'd':
-                diff = unified_diff(
-                    existing_content.split('\n'),
-                    contents.split('\n'),
-                    fromfile="%s (current)" % path[-1],
-                    tofile="%s (new)" % path[-1],
-                )
-                for row in diff:
-                    print(row)
+                print_diff()
     out = open(os.path.join(*path), 'w')
     out.write(contents)
     out.close()
