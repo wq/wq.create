@@ -13,8 +13,6 @@ env:
    - WQ_APP="wq.app==1.0.0b1"
    - WQ_DB="wq.db==1.0.0b3"
   matrix:
-   - DJANGO="django==1.8.16"
-   - DJANGO="django==1.9.11"
    - DJANGO="django==1.10.3"
    - DJANGO="django==1.10.3" LINT=1
 install:
