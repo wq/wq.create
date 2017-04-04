@@ -6,6 +6,7 @@ from django.core.management import call_command
 from django.core.management.commands import startproject
 from pkg_resources import resource_filename
 from wq.core.info import print_versions
+from .version import VERSION
 
 
 template = resource_filename('wq.start', 'django_project')
@@ -20,6 +21,7 @@ class StartProjectCommand(startproject.Command):
         super(StartProjectCommand, self).add_arguments(parser)
         parser.add_argument('--domain', help="Web Domain")
         parser.add_argument('--app-id', help="App Identifier")
+        parser.add_argument('--wq-start-version', help="wq start version")
 
 
 @wq.command()
@@ -56,6 +58,7 @@ def start(project_name, destination, domain=None, app_id=None):
         extensions="py,yml,conf,html,sh,js,css,json,xml".split(","),
         domain=domain,
         app_id=app_id,
+        wq_start_version=VERSION,
     )
     call_command(StartProjectCommand(), *args, **kwargs)
 

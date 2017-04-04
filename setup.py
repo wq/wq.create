@@ -31,6 +31,13 @@ def parse_markdown_readme():
     return readme.read()
 
 
+def get_version():
+    version = open("version.py").read().strip()
+    version = version.replace("VERSION = ", '')
+    version = version.replace('"', '')
+    return version
+
+
 def create_wq_namespace():
     """
     Generate the wq namespace package
@@ -68,7 +75,7 @@ for folder in TEMPLATES:
 
 setup(
     name='wq.start',
-    version='1.0.0-dev',
+    version=get_version(),
     author='S. Andrew Sheppard',
     author_email='andrew@wq.io',
     url='https://wq.io/wq.start',
@@ -82,7 +89,7 @@ setup(
     package_data={'wq.start': TEMPLATE_DATA},
     install_requires=[
         'wq.core',
-        'xlsconv>=0.3.0',
+        'xlsconv>=0.4.0',
     ],
     classifiers=[
         'Development Status :: 5 - Production/Stable',
