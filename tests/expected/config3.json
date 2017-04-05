@@ -8,7 +8,7 @@
                 {
                     "hint": "The unique name of the site",
                     "name": "name",
-                    "type": "string",
+                    "type": "text",
                     "label": "Site Name",
                     "bind": {
                         "required": true
@@ -31,7 +31,7 @@
                             "label": "Land"
                         }
                     ],
-                    "type": "select1",
+                    "type": "select one",
                     "label": "Site Type",
                     "bind": {
                         "required": true
@@ -40,15 +40,26 @@
                 {
                     "hint": "The location of the site",
                     "name": "geometry",
-                    "type": "geoshape",
+                    "type": "geopoint",
                     "label": "Location",
                     "bind": {
                         "required": true
                     }
                 }
             ],
-            "map": {
-                "edit": {
+            "map": [
+                {
+                    "mode": "list",
+                    "layers": [],
+                    "autoLayers": true
+                },
+                {
+                    "mode": "detail",
+                    "layers": [],
+                    "autoLayers": true
+                },
+                {
+                    "mode": "edit",
                     "layers": [
                         {
                             "type": "geojson",
@@ -65,22 +76,21 @@
                             }
                         }
                     ]
-                },
-                "list": {
-                    "layers": [],
-                    "autoLayers": true
-                },
-                "detail": {
-                    "layers": [],
-                    "autoLayers": true
                 }
-            }
+            ]
         },
         "observation": {
             "name": "observation",
             "url": "observations",
             "list": true,
             "form": [
+                {
+                    "hint": "The site where the observation was taken",
+                    "name": "location",
+                    "type": "string",
+                    "wq:ForeignKey": "location",
+                    "label": "Site"
+                },
                 {
                     "hint": "The date when the observation was taken",
                     "name": "date",
@@ -89,22 +99,15 @@
                 },
                 {
                     "name": "photo",
-                    "type": "binary",
+                    "type": "image",
                     "hint": "Photo of the site",
                     "label": "Photo"
                 },
                 {
                     "hint": "Field observations and notes",
                     "name": "notes",
-                    "type": "string",
+                    "type": "text",
                     "label": "Notes"
-                },
-                {
-                    "hint": "The site where the observation was taken",
-                    "name": "location",
-                    "type": "string",
-                    "wq:ForeignKey": "location",
-                    "label": "Site"
                 }
             ]
         },
