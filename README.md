@@ -12,12 +12,16 @@ wq.start: Project template and scaffolding tools
 
 [![Travis Build Status](https://img.shields.io/travis/wq/wq.start/master.svg)](https://travis-ci.org/wq/wq.start)
 [![Python Support](https://img.shields.io/pypi/pyversions/wq.start.svg)](https://pypi.python.org/pypi/wq.start)
-[![Django Support](https://img.shields.io/badge/Django-1.8%2C%201.9%2C%201.10-blue.svg)](https://pypi.python.org/pypi/wq.start)
+[![Django Support](https://img.shields.io/badge/Django-1.10%2C%201.11-blue.svg)](https://pypi.python.org/pypi/wq.start)
 
 ### Usage
 
 ```sh
-pip3 install wq
+# Recommended: create virtual environment
+# python3 -m venv venv
+# . venv/bin/activate
+pip install wq
+
 wq start <projectname> [directory]
 cd <projectname>/db
 wq addform ~/my-odk-form.xlsx
