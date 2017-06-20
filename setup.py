@@ -89,6 +89,7 @@ setup(
     package_data={'wq.start': TEMPLATE_DATA},
     install_requires=[
         'wq.core',
+        'psycopg2',
         'xlsconv>=0.4.0',
     ],
     classifiers=[
