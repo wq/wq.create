@@ -9,13 +9,13 @@ addons:
   postgresql: "9.4"
 env:
   global:
-   - DRF="djangorestframework==3.6.2"
-   - WQ_CORE="wq.core==1.0.0b1"
-   - WQ_APP="wq.app==1.0.0rc1"
-   - WQ_DB="wq.db==1.0.0rc1"
+   - DRF="djangorestframework==3.6.3"
+   - WQ_CORE="wq.core==1.0.0"
+   - WQ_APP="wq.app==1.0.0"
+   - WQ_DB="wq.db==1.0.0"
   matrix:
-   - DJANGO="django==1.11"
-   - DJANGO="django==1.11" LINT=1
+   - DJANGO="django==1.11.3"
+   - DJANGO="django==1.11.3" LINT=1
 install:
  - pip install $DJANGO
  - pip install $DRF
