@@ -108,6 +108,7 @@ setup(
         'Framework :: Django :: 1.10',
         'Framework :: Django :: 1.11',
         'Topic :: Software Development :: Libraries :: Application Frameworks',
+        'Topic :: Software Development :: Code Generators',
         'Topic :: Text Processing :: Markup :: HTML',
         'Topic :: Software Development :: Build Tools',
         'Topic :: Software Development :: Pre-processors',
