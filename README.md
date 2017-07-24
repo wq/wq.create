@@ -1,7 +1,6 @@
-wq.start: Project template and scaffolding tools
-================================
+[![wq.start](https://raw.github.com/wq/wq/master/images/256/wq.start.png)](https://wq.io/wq.start)
 
-`wq.start` provides a simple command-line interface (`wq start`) for starting a new project with the [wq framework], with [wq.app] for the front end and [wq.db] as the backend component.  `wq.start` also provides commands for generating a default set of offline-capable list, detail, and edit templates.  The templates can be generated for existing Django models (via `wq maketemplates`), or both the models and the templates can be generated from an ODK-style [XLSForm](http://xlsform.org) (via `wq addform`).
+[wq.start](https://wq.io/wq.start) provides a simple command-line interface (`wq start`) for starting a new project with the [wq framework], with [wq.app] for the front end and [wq.db] as the backend component.  `wq.start` also provides commands for generating a default set of offline-capable list, detail, and edit templates.  The templates can be generated for existing Django models (via `wq maketemplates`), or both the models and the templates can be generated from an ODK-style [XLSForm](http://xlsform.org) (via `wq addform`).
 
 [![Latest PyPI Release](https://img.shields.io/pypi/v/wq.start.svg)](https://pypi.python.org/pypi/wq.start)
 [![Release Notes](https://img.shields.io/github/release/wq/wq.start.svg)](https://github.com/wq/wq.start/releases)
