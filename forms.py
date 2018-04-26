@@ -217,9 +217,14 @@ def maketemplates(input_dir, django_dir, template_dir, overwrite):
     )
     config = json.loads(result.decode('utf-8'))
 
+    has_diff = False
+
     for page in config['pages'].values():
         if not page.get('list', None):
             continue
+
+        if has_diff == 'skipall':
+            break
 
         def process_fields(fields):
             for field in fields:
@@ -258,20 +263,25 @@ def maketemplates(input_dir, django_dir, template_dir, overwrite):
             template_types.add('popup')
 
         for tmpl in template_types:
-            create_file(
+            has_diff = create_file(
                 [template_dir, "%s_%s.html" % (page['name'], tmpl)],
                 render(context, os.path.join(input_dir, '%s.html' % tmpl)),
                 overwrite=overwrite,
+                previous_diff=has_diff,
             )
+            if has_diff == 'skipall':
+                break
 
 
-def create_file(path, contents, overwrite=False, show_diff=False):
+def create_file(path, contents, overwrite=False,
+                show_diff=False, previous_diff=False):
     filename = os.path.join(*path)
+    has_diff = previous_diff
     if os.path.exists(filename) and not overwrite:
         existing_file = open(filename, 'r')
         existing_content = existing_file.read()
         if existing_content.strip() == contents.strip():
-            return
+            return False
 
         def print_diff():
             diff = unified_diff(
@@ -288,9 +298,16 @@ def create_file(path, contents, overwrite=False, show_diff=False):
             message = "Update %s? [Y/n/d/?]"
             default_choice = 'y'
         else:
+            if not previous_diff:
+                choice = click.prompt('Update templates? [y/n]')
+                if choice.lower() != 'y':
+                   print("Skipping template updates.")
+                   return 'skipall'
+
             message = "%s already exists; overwrite? [y/n/d/?]"
             default_choice = None
 
+        has_diff = True
         choice = ''
         while choice.lower() not in ('y', 'n'):
             choice = click.prompt(
@@ -299,7 +316,7 @@ def create_file(path, contents, overwrite=False, show_diff=False):
             if choice == '' and show_diff:
                 choice = 'y'
             if choice.lower() == 'n':
-                return
+                return has_diff
             elif choice.lower() == '?':
                 print(
                     '  y - overwrite\n'
@@ -312,3 +329,4 @@ def create_file(path, contents, overwrite=False, show_diff=False):
     out = open(os.path.join(*path), 'w')
     out.write(contents)
     out.close()
+    return has_diff
