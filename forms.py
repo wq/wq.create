@@ -301,8 +301,8 @@ def create_file(path, contents, overwrite=False,
             if not previous_diff:
                 choice = click.prompt('Update templates? [y/n]')
                 if choice.lower() != 'y':
-                   print("Skipping template updates.")
-                   return 'skipall'
+                    print("Skipping template updates.")
+                    return 'skipall'
 
             message = "%s already exists; overwrite? [y/n/d/?]"
             default_choice = None
