@@ -9,15 +9,11 @@ dropdb -Upostgres test_project --if-exists
 createdb -Upostgres test_project
 psql -Upostgres test_project -c "CREATE EXTENSION postgis";
 
-MANAGE="./manage.py --settings test_project.settings.prod"
+MANAGE="test_project/db/manage.py --settings test_project.settings.prod"
 
 # wq start: Create new project and verify empty config
 rm -rf test_project
 wq start test_project -d test.wq.io
-if [ `python -c 'import sys; print(sys.version_info[0])'` == "2" ]
-then
-   sed -i "s/python3/python/" test_project/db/manage.py
-fi
 sed -i "s/'USER': 'test_project'/'USER': 'postgres'/" test_project/db/test_project/settings/prod.py
 sed -i "s/ALLOWED_HOSTS/# ALLOWED_HOSTS/" test_project/db/test_project/settings/prod.py
 $MANAGE migrate
@@ -41,10 +37,8 @@ $MANAGE dump_config > output/config3.json
 ./json-compare.py expected/config3.json output/config3.json
 
 # Enable anonymous submissions and start webserver
-cd test_project/db
-sed -i "s/WSGI_APPLICATION/ANONYMOUS_PERMISSIONS = ['location.add_location', 'observation.add_observation']\n\nWSGI_APPLICATION/" test_project/settings.py
+sed -i "s/WSGI_APPLICATION/ANONYMOUS_PERMISSIONS = ['location.add_location', 'observation.add_observation']\n\nWSGI_APPLICATION/" test_project/db/test_project/settings/base.py
 $MANAGE runserver & sleep 5
-cd ../../
 
 # Submit a new site
 curl -sf http://localhost:8000/locations.json > output/locations1.json
