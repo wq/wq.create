@@ -7,10 +7,10 @@ python:
 env:
   global:
    - DRF="djangorestframework==3.8.2"
-   - WQ_CORE="wq.core==1.0.0"
+   - WQ_CORE="wq.core==1.1.0"
    - WQ_APP="wq.app==1.1.0"
-   - WQ_DB="https://github.com/wq/wq.db/archive/update.zip"
-   - XLSCONV="https://github.com/wq/xlsform-converter/archive/master.zip"
+   - WQ_DB="wq.db==1.1.0"
+   - XLSCONV="xlsconv==1.1.0"
   matrix:
    - DJANGO="django==2.0.4"
    - DJANGO="django==2.0.4" LINT=1

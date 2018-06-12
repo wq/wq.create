@@ -90,7 +90,7 @@ setup(
     install_requires=[
         'wq.core',
         'psycopg2-binary',
-        'xlsconv>=1.0.0',
+        'xlsconv>=1.1.0',
     ],
     classifiers=[
         'Development Status :: 5 - Production/Stable',
