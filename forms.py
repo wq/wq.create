@@ -138,6 +138,8 @@ def addform(xlsform, input_dir, django_dir, template_dir,
         for filename in files:
             if filename == 'settings.py':
                 settings_path = (path, filename)
+            elif path.endswith('/settings') and filename == 'base.py':
+                settings_path = (path[:-9], 'settings', filename)
 
     if not settings_path:
         return
@@ -310,8 +312,12 @@ def create_file(path, contents, overwrite=False,
         has_diff = True
         choice = ''
         while choice.lower() not in ('y', 'n'):
+            if path[-2] == 'settings':
+                filename = os.path.join(*path[-2:])
+            else:
+                filename = path[-1]
             choice = click.prompt(
-                message % path[-1], default=default_choice, show_default=False
+                message % filename, default=default_choice, show_default=False
             )
             if choice == '' and show_diff:
                 choice = 'y'

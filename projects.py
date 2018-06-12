@@ -28,7 +28,7 @@ class StartProjectCommand(startproject.Command):
 @click.argument("project_name", required=True)
 @click.argument("destination", required=False)
 @click.option(
-    "-d", "--domain", required=True, help='Web domain (e.g. example.wq.io)'
+    "-d", "--domain", help='Web domain (e.g. example.wq.io)'
 )
 @click.option(
     "-i", "--app-id", help="Application ID (e.g. io.wq.example)"
@@ -47,6 +47,9 @@ def start(project_name, destination, domain=None, app_id=None):
     See https://wq.io/docs/setup for more tips on getting started with wq.
     """
 
+    if domain is None:
+        domain = '{}.example.org'.format(project_name)
+
     if app_id is None:
         app_id = '.'.join(reversed(domain.split('.')))
 
@@ -63,11 +66,7 @@ def start(project_name, destination, domain=None, app_id=None):
     call_command(StartProjectCommand(), *args, **kwargs)
 
     path = destination or project_name
-    txt = os.path.join(path, 'requirements.txt')
-    print_versions(txt, [
-        'wq.app',
-        'wq.db',
-    ])
+    print_versions(os.path.join(path, 'requirements.txt'))
     shutil.copytree(
         resource_filename('xlsconv', 'templates'),
         os.path.join(path, 'master_templates'),
