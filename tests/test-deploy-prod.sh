@@ -17,7 +17,7 @@ MANAGE="test_project/db/manage.py"
 rm -rf test_project
 wq start test_project -d test.wq.io
 sed -i "s/'USER': 'test_project'/'USER': 'postgres'/" test_project/db/test_project/settings/prod.py
-sed -i "s/ALLOWED_HOSTS/# ALLOWED_HOSTS/" test_project/db/test_project/settings/prod.py
+sed -i "s/ALLOWED_HOSTS.*/ALLOWED_HOSTS = ['localhost']/" test_project/db/test_project/settings/prod.py
 $MANAGE migrate
 $MANAGE dump_config > output/config1.json
 ./json-compare.py expected/config1.json output/config1.json
