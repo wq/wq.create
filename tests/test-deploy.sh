@@ -9,7 +9,9 @@ dropdb -Upostgres test_project --if-exists
 createdb -Upostgres test_project
 psql -Upostgres test_project -c "CREATE EXTENSION postgis";
 
-MANAGE="test_project/db/manage.py --settings test_project.settings.prod"
+export DJANGO_SETTINGS_MODULE="test_project.settings.prod"
+
+MANAGE="test_project/db/manage.py"
 
 # wq start: Create new project and verify empty config
 rm -rf test_project
