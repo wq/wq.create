@@ -21,6 +21,7 @@ class StartProjectCommand(startproject.Command):
         super(StartProjectCommand, self).add_arguments(parser)
         parser.add_argument('--domain', help="Web Domain")
         parser.add_argument('--app-id', help="App Identifier")
+        parser.add_argument('--with-gis', help="Enable GeoDjango")
         parser.add_argument('--wq-start-version', help="wq start version")
 
 
@@ -33,7 +34,10 @@ class StartProjectCommand(startproject.Command):
 @click.option(
     "-i", "--app-id", help="Application ID (e.g. io.wq.example)"
 )
-def start(project_name, destination, domain=None, app_id=None):
+@click.option(
+    "--with-gis/--without-gis", default=True, help="Enable GeoDjango"
+)
+def start(project_name, destination, domain=None, app_id=None, with_gis=True):
     """
     Start a new project with wq.app and wq.db.  A new Django project will be
     created from a wq-specific template.  After running this command, you may
@@ -62,6 +66,7 @@ def start(project_name, destination, domain=None, app_id=None):
         domain=domain,
         app_id=app_id,
         wq_start_version=VERSION,
+        with_gis=with_gis,
     )
     call_command(StartProjectCommand(), *args, **kwargs)
 
