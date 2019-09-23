@@ -19,7 +19,7 @@
 # Recommended: create virtual environment
 # python3 -m venv venv
 # . venv/bin/activate
-pip install wq
+python3 -m pip install wq
 
 wq start <projectname> [directory]
 cd <projectname>/db

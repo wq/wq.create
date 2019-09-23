@@ -6,36 +6,12 @@ Project scaffolding tools for creating a new crowdsourcing or citizen science ap
 """
 
 
-def parse_markdown_readme():
-    """
-    Convert README.md to RST via pandoc, and load into memory
-    (fallback to LONG_DESCRIPTION on failure)
-    """
-    # Attempt to run pandoc on markdown file
-    import subprocess
+def readme():
     try:
-        subprocess.call(
-            ['pandoc', '-t', 'rst', '-o', 'README.rst', 'README.md']
-        )
-    except OSError:
-        return LONG_DESCRIPTION
-
-    # Attempt to load output
-    try:
-        readme = open(os.path.join(
-            os.path.dirname(__file__),
-            'README.rst'
-        ))
+        readme = open('README.md')
     except IOError:
         return LONG_DESCRIPTION
     return readme.read()
-
-
-def get_version():
-    version = open("version.py").read().strip()
-    version = version.replace("VERSION = ", '')
-    version = version.replace('"', '')
-    return version
 
 
 def create_wq_namespace():
@@ -75,13 +51,14 @@ for folder in TEMPLATES:
 
 setup(
     name='wq.start',
-    version=get_version(),
+    use_scm_version=True,
     author='S. Andrew Sheppard',
     author_email='andrew@wq.io',
     url='https://wq.io/wq.start',
     license='MIT',
     description=LONG_DESCRIPTION.strip(),
-    long_description=parse_markdown_readme(),
+    long_description=readme(),
+    long_description_content_type='text/markdown',
     entry_points={'wq': 'wq.start=wq.start'},
     packages=['wq.start'],
     package_dir={'wq.start': '.'},
@@ -91,6 +68,9 @@ setup(
         'wq.core',
         'psycopg2-binary',
         'xlsconv>=1.1.0',
+    ],
+    setup_requires=[
+        'setuptools_scm',
     ],
     classifiers=[
         'Development Status :: 5 - Production/Stable',
@@ -102,9 +82,12 @@ setup(
         'Programming Language :: Python :: 3.4',
         'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
+        'Programming Language :: Python :: 3.7',
         'Framework :: Django',
         'Framework :: Django :: 1.11',
         'Framework :: Django :: 2.0',
+        'Framework :: Django :: 2.1',
+        'Framework :: Django :: 2.2',
         'Topic :: Software Development :: Libraries :: Application Frameworks',
         'Topic :: Software Development :: Code Generators',
         'Topic :: Text Processing :: Markup :: HTML',
