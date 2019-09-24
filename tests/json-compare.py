@@ -7,6 +7,9 @@ file1, file2 = sys.argv[1:]
 json1 = json.load(open(file1))
 json2 = json.load(open(file2))
 
+if 'debug' in json2:
+    json2.pop('debug')
+
 def unpack_diff(json1, json2, prefix=''):
     if isinstance(json1, list) and isinstance(json2, list):
         for i, (val1, val2) in enumerate(zip(json1, json2)):
