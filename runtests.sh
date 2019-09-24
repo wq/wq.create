@@ -1,7 +1,7 @@
 set -e
 if [ "$LINT" ]; then
     flake8 {forms,projects}.py
-elif [ "$POSTGRES"]; then
+elif [ "$POSTGRES" ]; then
     cd tests
     ./test-deploy-prod.sh
 else

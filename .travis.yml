@@ -13,6 +13,11 @@ install:
  - pip install $DJANGO $DRF $XLSCONV
  - pip install $WQ_CORE $WQ_APP $WQ_DB
  - pip install .
+addons:
+  apt:
+    packages:
+      - libsqlite3-mod-spatialite
+      - gdal-bin
 matrix:
   include:
     - name: "Defaults (Python 3.7, SpatialLite)"
