@@ -5,20 +5,25 @@ set -e
 rm -rf test_project
 rm -rf output
 mkdir output
-dropdb -Upostgres test_project --if-exists
-createdb -Upostgres test_project
-psql -Upostgres test_project -c "CREATE EXTENSION postgis";
 
-export DJANGO_SETTINGS_MODULE="test_project.settings.prod"
+if [ "$POSTGRES" ]; then
+    dropdb -Upostgres test_project --if-exists
+    createdb -Upostgres test_project
+    psql -Upostgres test_project -c "CREATE EXTENSION postgis";
+
+    export DJANGO_SETTINGS_MODULE="test_project.settings.prod"
+fi;
 
 MANAGE="test_project/db/manage.py"
-PORT=8002
+PORT=8000
 
 # wq start: Create new project and verify empty config
 rm -rf test_project
 wq start test_project -d test.wq.io
-sed -i "s/'USER': 'test_project'/'USER': 'postgres'/" test_project/db/test_project/settings/prod.py
-sed -i "s/ALLOWED_HOSTS.*/ALLOWED_HOSTS = ['localhost']/" test_project/db/test_project/settings/prod.py
+if [ "$POSTGRES" ]; then
+    sed -i "s/'USER': 'test_project'/'USER': 'postgres'/" test_project/db/test_project/settings/prod.py
+    sed -i "s/ALLOWED_HOSTS.*/ALLOWED_HOSTS = ['localhost']/" test_project/db/test_project/settings/prod.py
+fi;
 $MANAGE migrate
 $MANAGE dump_config > output/config1.json
 ./json-compare.py expected/config1.json output/config1.json
