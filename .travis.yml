@@ -1,28 +1,37 @@
 language: python
-sudo: false
-python:
- - "3.4"
- - "3.5"
- - "3.6"
+python: 3.7
+dist: xenial
 env:
   global:
-   - DRF="djangorestframework==3.8.2"
+   - DJANGO="Django==2.2.5"
+   - DRF="djangorestframework==3.10.3"
    - WQ_CORE="wq.core==1.1.0"
    - WQ_APP="wq.app==1.1.0"
-   - WQ_DB="wq.db==1.1.0"
+   - WQ_DB="git+https://github.com/wq/wq.db.git#egg=wq.db"
    - XLSCONV="xlsconv==1.1.0"
-  matrix:
-   - DJANGO="django==2.0.4"
-   - DJANGO="django==2.0.4" LINT=1
 install:
  - pip install $DJANGO $DRF $XLSCONV
  - pip install $WQ_CORE $WQ_APP $WQ_DB
- - pip install flake8
  - pip install .
+matrix:
+  include:
+    - name: "Defaults (Python 3.7, SpatialLite)"
+    - name: "Python 3.6"
+      python: 3.6
+    - name: "Python 3.5"
+      python: 3.5
+    - name: "PostGIS"
+      env:
+        - POSTGRES=1
+      addons:
+        postgresql: "10"
+        apt:
+          packages:
+           - postgresql-10-postgis-2.4
+    - name: "Lint"
+      env:
+        - LINT=1
+      install:
+        - pip install flake8
 script:
  - ./runtests.sh
-addons:
-  postgresql: "9.6"
-  apt:
-    packages:
-     - postgresql-9.6-postgis-2.3

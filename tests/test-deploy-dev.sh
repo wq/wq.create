@@ -12,10 +12,6 @@ PORT=8001
 # wq start: Create new project and verify empty config
 rm -rf test_project
 wq start test_project
-if [[ ! -z "$CI" ]]; then
-    # mod_spatialite not available on Ubuntu 14.04 (i.e. Travis)
-    sed -i "s/^SPATIALITE/# SPATIALITE/" test_project/db/test_project/settings/dev.py
-fi;
 $MANAGE migrate
 $MANAGE dump_config > output/config1.json
 ./json-compare.py expected/config1.json output/config1.json
