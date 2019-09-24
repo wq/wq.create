@@ -31,17 +31,19 @@ def list_package_data(root):
     Include project template as package data
     """
     paths = []
-    for base, dirs, files in os.walk(root):
+
+    for base, dirs, files in os.walk(root, topdown=True):
+        if 'node_modules' in dirs:
+            dirs.remove('node_modules')
         paths.extend([
             os.path.join(base, name) for name in files
-            if name not in ('.git',)
+            if name not in ('.git', 'package-lock.json')
         ])
     return paths
 
-
 create_wq_namespace()
 
-# Template data (currently only one project template)
+# Project template data
 TEMPLATES = [
     'django_project',
 ]

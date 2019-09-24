@@ -17,9 +17,27 @@ fi;
 MANAGE="test_project/db/manage.py"
 PORT=8000
 
-# wq start: Create new project and verify empty config
+# wq start: Create new project
 rm -rf test_project
-wq start test_project -d test.wq.io
+
+GIS_FLAG="--with-gis"
+
+if [ "$WITH_NPM" ]; then
+    NPM_FLAG="--with-npm --npm-install"
+else
+    NPM_FLAG="--without-npm"
+fi;
+
+wq start test_project ./test_project -d test.wq.io -i io.wq.test $NPM_FLAG $GIS_FLAG
+
+# Verify ./deploy.sh works
+cd test_project
+mkdir -p .wq-pgb
+echo "disable: true" > .wq-pgb/wq-pgb.yml
+./deploy.sh 0.0.0
+cd ..;
+
+# Load db and verify initial config
 if [ "$POSTGRES" ]; then
     sed -i "s/'USER': 'test_project'/'USER': 'postgres'/" test_project/db/test_project/settings/prod.py
     sed -i "s/ALLOWED_HOSTS.*/ALLOWED_HOSTS = ['localhost']/" test_project/db/test_project/settings/prod.py

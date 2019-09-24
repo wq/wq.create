@@ -20,7 +20,7 @@ addons:
       - gdal-bin
 matrix:
   include:
-    - name: "Defaults (Python 3.7, SpatialLite)"
+    - name: "Defaults (Python 3.7, SpatialLite, No NPM)"
     - name: "Python 3.6"
       python: 3.6
     - name: "Python 3.5"
@@ -33,6 +33,9 @@ matrix:
         apt:
           packages:
            - postgresql-10-postgis-2.4
+    - name: "NPM"
+      env:
+        - WITH_NPM=1
     - name: "Lint"
       env:
         - LINT=1
