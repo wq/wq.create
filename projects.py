@@ -111,7 +111,7 @@ def start(project_name, destination, domain=None, app_id=None,
     args = [project_name, destination]
     kwargs = dict(
         template=template,
-        extensions="py,yml,conf,html,sh,js,css,json,xml".split(","),
+        extensions="py,yml,conf,html,sh,js,css,json,xml,gitignore".split(","),
         domain=domain,
         app_id=app_id,
         wq_start_version=VERSION,
