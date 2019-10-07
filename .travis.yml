@@ -5,9 +5,9 @@ env:
   global:
    - DJANGO="Django==2.2.5"
    - DRF="djangorestframework==3.10.3"
-   - WQ_CORE="wq.core==1.1.0"
-   - WQ_APP="wq.app==1.1.0"
-   - WQ_DB="git+https://github.com/wq/wq.db.git#egg=wq.db"
+   - WQ_CORE="wq.core==1.2.0b1"
+   - WQ_APP="wq.app==1.2.0b1"
+   - WQ_DB="wq.db==1.2.0b1"
    - XLSCONV="xlsconv==1.1.0"
 install:
  - pip install $DJANGO $DRF $XLSCONV
