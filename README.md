@@ -11,7 +11,7 @@
 
 [![Travis Build Status](https://img.shields.io/travis/wq/wq.start/master.svg)](https://travis-ci.org/wq/wq.start)
 [![Python Support](https://img.shields.io/pypi/pyversions/wq.start.svg)](https://pypi.org/project/wq.start)
-[![Django Support](https://img.shields.io/badge/Django-1.11%2C%202.0-blue.svg)](https://pypi.org/project/wq.start)
+[![Django Support](https://img.shields.io/pypi/djversions/wq.start.svg)](https://pypi.org/project/wq.start)
 
 ### Usage
 
