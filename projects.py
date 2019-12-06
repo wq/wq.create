@@ -24,6 +24,7 @@ class StartProjectCommand(startproject.Command):
         parser.add_argument('--app-id', help="App Identifier")
         parser.add_argument('--with-gis', help="Enable GeoDjango")
         parser.add_argument('--with-npm', help="Enable NPM")
+        parser.add_argument('--with-pgb', help="Enable PhoneGap Build")
         parser.add_argument('--wq-start-version', help="wq start version")
 
 
@@ -32,9 +33,6 @@ class StartProjectCommand(startproject.Command):
 @click.argument("destination", required=False)
 @click.option(
     "-d", "--domain", help='Web domain (e.g. example.wq.io)'
-)
-@click.option(
-    "-i", "--app-id", help="Application ID (e.g. io.wq.example)"
 )
 @click.option(
     "--with-gis/--without-gis", default=None, help="Enable GeoDjango"
@@ -47,8 +45,15 @@ class StartProjectCommand(startproject.Command):
     "--npm-install/--skip-npm-install",  default=None,
     help="Run NPM install after creating project"
 )
-def start(project_name, destination, domain=None, app_id=None,
-          with_gis=None, with_npm=None, npm_install=None):
+@click.option(
+    '--with-pgb/--without-pgb', default=None, help="Enable PhoneGap Build",
+)
+@click.option(
+    "-i", "--app-id", help="Application ID (e.g. io.wq.example)"
+)
+def start(project_name, destination, domain=None,
+          with_gis=None, with_npm=None, npm_install=None,
+          with_pgb=None, app_id=None):
     """
     Start a new project with wq.app and wq.db.  A new Django project will be
     created from a wq-specific template.  Any options not specified via
@@ -84,13 +89,6 @@ def start(project_name, destination, domain=None, app_id=None,
             default='{}.example.org'.format(project_name)
         )
 
-    if app_id is None:
-        any_prompts = True
-        app_id = click.prompt(
-            'Application Bundle ID',
-            default='.'.join(reversed(domain.split('.')))
-        )
-
     if with_gis is None:
         any_prompts = True
         with_gis = click.confirm(
@@ -104,6 +102,24 @@ def start(project_name, destination, domain=None, app_id=None,
             'Enable NPM / Create React App? (Requires Node.js)',
             default=False,
         )
+
+    if app_id:
+        with_pgb = True
+
+    if with_pgb is None:
+        any_prompts = True
+        with_pgb = click.confirm(
+            'Enable PhoneGap Build? (Requires Adobe account)',
+            default=False,
+        )
+
+    if with_pgb and app_id is None:
+        any_prompts = True
+        app_id = click.prompt(
+            'Application Bundle ID',
+            default='.'.join(reversed(domain.split('.')))
+        )
+
     os.makedirs(
         os.path.abspath(os.path.expanduser(destination)),
         exist_ok=True,
@@ -113,10 +129,11 @@ def start(project_name, destination, domain=None, app_id=None,
         template=template,
         extensions="py,yml,conf,html,sh,js,css,json,xml,gitignore".split(","),
         domain=domain,
-        app_id=app_id,
         wq_start_version=VERSION,
         with_gis=with_gis,
         with_npm=with_npm,
+        with_pgb=with_pgb,
+        app_id=app_id,
     )
     call_command(StartProjectCommand(), *args, **kwargs)
 
@@ -127,6 +144,10 @@ def start(project_name, destination, domain=None, app_id=None,
         os.path.join(path, 'master_templates'),
         ignore=shutil.ignore_patterns("*.py-tpl"),
     )
+
+    if not with_pgb:
+        shutil.rmtree(os.path.join(path, 'app', 'pgb'))
+
     if with_npm:
         shutil.rmtree(os.path.join(path, 'app', 'js'))
         os.remove(os.path.join(path, 'app', 'src', 'README.md'))
@@ -135,7 +156,8 @@ def start(project_name, destination, domain=None, app_id=None,
         os.remove(os.path.join(path, 'app', 'js', 'README.md'))
         os.remove(os.path.join(path, 'app', 'package.json'))
         os.remove(os.path.join(path, 'app', 'public', 'index.html'))
-        os.remove(os.path.join(path, 'app', 'pgb', 'pginit.js'))
+        if with_pgb:
+            os.remove(os.path.join(path, 'app', 'pgb', 'pginit.js'))
         public_dir = os.path.join(path, 'app', 'public')
         for filename in os.listdir(public_dir):
             os.rename(
@@ -144,16 +166,22 @@ def start(project_name, destination, domain=None, app_id=None,
             )
         os.rmdir(public_dir)
 
+    flags = []
     if with_gis:
-        if with_npm:
-            flag_summary = " with GIS and NPM support"
-        else:
-            flag_summary = " with GIS support"
+        flags.append('GIS')
+    if with_npm:
+        flags.append('NPM')
+    if with_pgb:
+        flags.append('PGB')
+
+    if len(flags) == 3:
+        flag_summary = " with {0}, {1}, and {2} support".format(*flags)
+    elif len(flags) == 2:
+        flag_summary = " with {0} and {1} support".format(*flags)
+    elif len(flags) == 1:
+        flag_summary = " with {} support".format(*flags)
     else:
-        if with_npm:
-            flag_summary = " with NPM support"
-        else:
-            flag_summary = ""
+        flag_summary = ""
 
     if any_prompts:
         click.echo()
@@ -178,4 +206,10 @@ def start(project_name, destination, domain=None, app_id=None,
             click.echo()
             click.echo("npm install complete.")
 
-    click.echo("Run ./deploy.sh 0.0.0 to finish initial setup.")
+    if with_npm and not npm_install:
+        click.echo(
+            "After running npm install in ./app/,"
+            " run ./deploy.sh 0.0.0 to finish initial setup."
+        )
+    else:
+        click.echo("Run ./deploy.sh 0.0.0 to finish initial setup.")
