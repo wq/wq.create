@@ -1,13 +1,13 @@
 language: python
-python: 3.7
-dist: xenial
+python: 3.8
+dist: bionic
 env:
   global:
-   - DJANGO="Django==2.2.5"
-   - DRF="djangorestframework==3.10.3"
-   - WQ_CORE="wq.core==1.2.0b1"
-   - WQ_APP="wq.app==1.2.0b1"
-   - WQ_DB="wq.db==1.2.0b1"
+   - DJANGO="Django==3.0.2"
+   - DRF="djangorestframework==3.11.0"
+   - WQ_CORE="wq.core==1.2.0"
+   - WQ_APP="wq.app==1.2.0"
+   - WQ_DB="wq.db==1.2.0"
    - XLSCONV="xlsconv==1.1.0"
 install:
  - pip install $DJANGO $DRF $XLSCONV
@@ -20,11 +20,11 @@ addons:
       - gdal-bin
 matrix:
   include:
-    - name: "Defaults (Python 3.7, SpatialLite, No NPM)"
+    - name: "Defaults (Python 3.8, SpatialLite, No NPM)"
+    - name: "Python 3.7"
+      python: 3.7
     - name: "Python 3.6"
       python: 3.6
-    - name: "Python 3.5"
-      python: 3.5
     - name: "PostGIS"
       env:
         - POSTGRES=1
