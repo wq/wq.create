@@ -69,7 +69,7 @@ setup(
     install_requires=[
         'wq.core',
         'psycopg2-binary',
-        'xlsconv>=1.1.0',
+        'xlsconv>=1.2.0',
     ],
     setup_requires=[
         'setuptools_scm',
@@ -92,6 +92,7 @@ setup(
         'Framework :: Django :: 2.1',
         'Framework :: Django :: 2.2',
         'Framework :: Django :: 3.0',
+        'Framework :: Django :: 3.1',
         'Topic :: Software Development :: Libraries :: Application Frameworks',
         'Topic :: Software Development :: Code Generators',
         'Topic :: Text Processing :: Markup :: HTML',

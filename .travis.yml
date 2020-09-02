@@ -3,12 +3,12 @@ python: 3.8
 dist: bionic
 env:
   global:
-   - DJANGO="Django==3.0.2"
-   - DRF="djangorestframework==3.11.0"
+   - DJANGO="Django==3.1.1"
+   - DRF="djangorestframework==3.11.1"
    - WQ_CORE="wq.core==1.2.0"
    - WQ_APP="wq.app==1.2.0"
-   - WQ_DB="wq.db==1.2.0"
-   - XLSCONV="xlsconv==1.1.0"
+   - WQ_DB="wq.db==1.2.1"
+   - XLSCONV="xlsconv==1.2.0"
 install:
  - pip install $DJANGO $DRF $XLSCONV
  - pip install $WQ_CORE $WQ_APP $WQ_DB
