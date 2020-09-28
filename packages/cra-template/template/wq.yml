@@ -1,0 +1,11 @@
+# Update version.txt & JS module
+setversion:
+    filename: ../version.txt
+    {% if not with_npm %}jsout: js/data/version.js {% endif %}
+
+# Generate web icons
+icons:
+    source: {% if with_npm %}public/{% endif %}icon-1024.png
+    {% if with_npm %}outdir: public/{% endif %}
+    filename: icon-{size}.png
+    size: web

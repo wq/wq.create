@@ -2,18 +2,10 @@ from wq.core import wq
 import click
 import os
 from xlsconv import parse_xls, xls2django, xls2html, html_context, render
-from pkg_resources import resource_filename
 import subprocess
 import json
 from difflib import unified_diff
 from pyxform.question_type_dictionary import QUESTION_TYPE_DICT as QTYPES
-
-
-templates = resource_filename('wq.start', 'master_templates')
-# resource_filename not returning absolute path after pip install
-if os.sep not in templates:
-    import wq as wq_module
-    templates = wq_module.__path__[0] + os.sep + templates
 
 
 @wq.command()
@@ -24,7 +16,6 @@ if os.sep not in templates:
 )
 @click.option(
     "--input-dir",
-    default="../master_templates",
     type=click.Path(exists=True),
     help="Source / master templates",
 )
@@ -36,7 +27,6 @@ if os.sep not in templates:
 )
 @click.option(
     "--template-dir",
-    default="../templates",
     type=click.Path(exists=True),
     help="Path to shared template directory",
 )
@@ -64,9 +54,14 @@ def addform(xlsform, input_dir, django_dir, template_dir,
     \b
         db/[form_name]/models.py
         db/[form_name]/rest.py
-        templates/[form_name]_detail.html
-        templates/[form_name]_edit.html
-        templates/[form_name]_list.html
+        templates/[form_name]_detail.html (if applicable)
+        templates/[form_name]_edit.html (if applicable)
+        templates/[form_name]_list.html (if applicable)
+
+    Note that Mustache templates are only used for projects generated with
+    wq.start 1.2 and earlier, which use the @wq/jquery-mobile renderer.
+    Newer projects leverage the @wq/react + @wq/material renderer, which uses
+    React components instead of Mustache templates.
     """
 
     xls_json = parse_xls(xlsform)
@@ -120,18 +115,25 @@ def addform(xlsform, input_dir, django_dir, template_dir,
             overwrite=force,
         )
 
-    template_types = set(['detail', 'edit', 'list'])
-    for field in xls_json['children']:
-        if 'geo' in field['type']:
-            if 'popup' in template_types:
-                print("Warning: multiple geometry fields found.")
-            template_types.add('popup')
-    for tmpl in template_types:
-        create_file(
-            [template_dir, "%s_%s.html" % (form_name, tmpl)],
-            xls2html(xlsform, os.path.join(input_dir, "%s.html" % tmpl)),
-            overwrite=force,
-        )
+    if not input_dir and os.path.exists('../master_templates'):
+        input_dir = '../master_templates'
+
+    if not template_dir and os.path.exists('../templates'):
+        template_dir = '../templates'
+
+    if input_dir and template_dir:
+        template_types = set(['detail', 'edit', 'list'])
+        for field in xls_json['children']:
+            if 'geo' in field['type']:
+                if 'popup' in template_types:
+                    print("Warning: multiple geometry fields found.")
+                template_types.add('popup')
+        for tmpl in template_types:
+            create_file(
+                [template_dir, "%s_%s.html" % (form_name, tmpl)],
+                xls2html(xlsform, os.path.join(input_dir, "%s.html" % tmpl)),
+                overwrite=force,
+            )
 
     settings_path = None
     for path, dirs, files in os.walk(django_dir):
@@ -206,13 +208,18 @@ def addform(xlsform, input_dir, django_dir, template_dir,
 )
 def maketemplates(input_dir, django_dir, template_dir, overwrite):
     """
-    Generate mustache templates for wq.db.rest.  Automatically discovers all
+    (DEPRECATED) Make list/edit/detail templates.  Automatically discovers all
     registered models through ./manage.py dump_config.
 
     \b
         templates/[model_name]_detail.html
         templates/[model_name]_edit.html
         templates/[model_name]_list.html
+
+    The `wq maketemplates` command is deprecated, and will be removed
+    in wq.start 2.0, as will all support for @wq/jquery-mobile.  The new
+    @wq/react + @wq/material renderer uses React components instead of
+    template strings.
     """
     result = subprocess.check_output(
         [os.path.join(django_dir, 'manage.py'), 'dump_config']
