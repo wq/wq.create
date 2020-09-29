@@ -23,17 +23,15 @@ rm -rf test_project
 GIS_FLAG="--with-gis"
 
 if [ "$WITH_NPM" ]; then
-    NPM_FLAG="--with-npm --npm-install"
+    NPM_FLAG="--with-npm"
 else
     NPM_FLAG="--without-npm"
 fi;
 
-wq start test_project ./test_project -d test.wq.io -i io.wq.test $NPM_FLAG $GIS_FLAG
+wq start test_project ./test_project -d test.wq.io $NPM_FLAG $GIS_FLAG
 
 # Verify ./deploy.sh works
 cd test_project
-mkdir -p .wq-pgb
-echo "disable: true" > .wq-pgb/wq-pgb.yml
 ./deploy.sh 0.0.0
 cd ..;
 

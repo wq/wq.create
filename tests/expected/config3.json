@@ -2,6 +2,8 @@
     "pages": {
         "location": {
             "name": "location",
+            "verbose_name": "location",
+            "verbose_name_plural": "locations",
             "url": "locations",
             "list": true,
             "form": [
@@ -81,6 +83,8 @@
         },
         "observation": {
             "name": "observation",
+            "verbose_name": "observation",
+            "verbose_name_plural": "observations",
             "url": "observations",
             "list": true,
             "form": [
