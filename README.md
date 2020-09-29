@@ -39,7 +39,7 @@ See the [Getting Started] docs for more information.
 [wq.app]: https://wq.io/wq.app
 [wq.db]: https://wq.io/wq.db
 [wq Django template]: https://github.com/wq/wq-django-template
-[@wq/cra-template]: https://github.com/wq/wq.start/tree/packages/cra-template
-[@wq/jquery-mobile]: https://github.com/wq/wq.app/tree/packages/jquery-mobile
+[@wq/cra-template]: https://github.com/wq/wq.start/tree/master/packages/cra-template
+[@wq/jquery-mobile]: https://github.com/wq/wq.app/tree/master/packages/jquery-mobile
 [xlsform-converter]: https://github.com/wq/xlsform-converter
 [Getting Started]: https://wq.io/docs/setup
