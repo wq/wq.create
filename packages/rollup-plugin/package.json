@@ -1,0 +1,71 @@
+{
+    "name": "@wq/rollup-plugin",
+    "version": "1.3.0-alpha.1",
+    "description": "Build custom wq plugins that integrate with wq.js",
+    "main": "src/index.js",
+    "scripts": {
+        "test": "jest",
+        "prettier": "prettier --write .",
+        "lint": " eslint src/"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/wq/wq.start.git",
+        "directory": "packages/rollup-plugin"
+    },
+    "keywords": [
+        "wq",
+        "build",
+        "rollup",
+        "rollup-plugin",
+        "bundle",
+        "virtual"
+    ],
+    "author": "S. Andrew Sheppard",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/wq/wq.start/issues"
+    },
+    "homepage": "https://wq.io/wq.start",
+    "dependencies": {},
+    "devDependencies": {
+        "@babel/core": "^7.12.3",
+        "@babel/plugin-transform-react-jsx": "^7.12.1",
+        "@babel/preset-env": "^7.12.1",
+        "@rollup/plugin-babel": "^5.2.1",
+        "eslint": "^7.11.0",
+        "eslint-plugin-jest": "^24.1.0",
+        "eslint-plugin-react": "^7.21.5",
+        "jest": "^26.5.3",
+        "prettier": "^2.1.2",
+        "rollup": "^2.32.0",
+        "rollup-plugin-prettier": "^2.1.0"
+    },
+    "prettier": {
+        "filepath": "input.js",
+        "trailingComma": "none",
+        "arrowParens": "avoid",
+        "tabWidth": 4,
+        "singleQuote": true
+    },
+    "babel": {
+        "presets": [
+            [
+                "@babel/preset-env",
+                {
+                    "targets": {
+                        "node": "current"
+                    }
+                }
+            ]
+        ],
+        "plugins": [
+            "@babel/transform-react-jsx"
+        ]
+    },
+    "jest": {
+        "testMatch": [
+            "**/__tests__/*.js?(x)"
+        ]
+    }
+}

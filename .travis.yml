@@ -20,7 +20,7 @@ addons:
       - gdal-bin
 matrix:
   include:
-    - name: "Defaults (Python 3.8, SpatialLite, No NPM)"
+    - name: "wq start (Python 3.8, SpatialLite, No NPM)"
     - name: "Python 3.7"
       python: 3.7
     - name: "Python 3.6"
@@ -36,7 +36,14 @@ matrix:
     - name: "NPM"
       env:
         - WITH_NPM=1
-    - name: "Lint"
+    - name: "@wq/rollup-plugin"
+      install:
+        - cd packages/rollup-plugin
+        - npm ci
+      script:
+        - npm test
+        - npm run lint
+    - name: "Python Lint"
       env:
         - LINT=1
       install:
