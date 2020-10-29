@@ -12,6 +12,9 @@ const prefix = '\0wq-bundle:',
         'prop-types': {
             name: 'PropTypes'
         },
+        'formik': {
+            name: 'formik'
+        },
         '@material-ui/styles': {
             name: 'muiStyles'
         },

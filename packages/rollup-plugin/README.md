@@ -26,7 +26,7 @@ export default [
             babel({
                 presets: ['@babel/preset-react'],
                 babelHelpers: 'inline'
-            })
+            }),
             resolve(),
             commonjs(),
             replace({
@@ -53,8 +53,10 @@ In addition to keeping bundle sizes small, @wq/rollup-plugin helps ensure that t
 -   `react`
 -   `react-dom`
 -   `prop-types`
+-   `formik`
 -   `@material-ui/utils`
 -   `@material-ui/styles`
+-   `@material-ui/core/ButtonBase`
 -   `@material-ui/core/styles/withStyles`
 -   `@material-ui/core/styles/colorManipulator`
 -   `mapbox-gl`
