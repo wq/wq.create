@@ -12,7 +12,7 @@ const prefix = '\0wq-bundle:',
         'prop-types': {
             name: 'PropTypes'
         },
-        'formik': {
+        formik: {
             name: 'formik'
         },
         '@material-ui/styles': {
@@ -24,6 +24,9 @@ const prefix = '\0wq-bundle:',
         '@material-ui/core/ButtonBase': {
             name: 'ButtonBase'
         },
+        '@material-ui/core/Paper': {
+            name: 'Paper'
+        },
         '@material-ui/core/styles/withStyles': {
             name: 'withStyles'
         },
@@ -32,6 +35,10 @@ const prefix = '\0wq-bundle:',
         },
         'mapbox-gl': {
             name: 'MapboxGL'
+        },
+        'react-mapbox-gl': {
+            name: 'ReactMapboxGl',
+            hasDefault: true
         },
         '@wq/app': {
             name: 'app'
@@ -52,7 +59,14 @@ const prefix = '\0wq-bundle:',
             name: 'mapbox',
             hasDefault: true
         }
-    };
+    },
+    muiCoreImports = {};
+
+Object.keys(modules)
+    .filter(id => id.match('@material-ui/core'))
+    .forEach(
+        id => (muiCoreImports[id.replace('@material-ui/core', '..')] = id)
+    );
 
 module.exports = function wq() {
     return {
@@ -67,16 +81,9 @@ module.exports = function wq() {
             if (
                 importer &&
                 importer.match('@material-ui/core') &&
-                id === '../ButtonBase'
+                muiCoreImports[id]
             ) {
-                id = '@material-ui/core/ButtonBase';
-            }
-            if (
-                importer &&
-                importer.match('@material-ui/core') &&
-                id.startsWith('../styles/')
-            ) {
-                id = id.replace('../styles/', '@material-ui/core/styles/');
+                id = muiCoreImports[id];
             }
             if (modules[id]) {
                 return {

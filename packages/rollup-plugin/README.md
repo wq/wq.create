@@ -57,9 +57,11 @@ In addition to keeping bundle sizes small, @wq/rollup-plugin helps ensure that t
 -   `@material-ui/utils`
 -   `@material-ui/styles`
 -   `@material-ui/core/ButtonBase`
+-   `@material-ui/core/Paper`
 -   `@material-ui/core/styles/withStyles`
 -   `@material-ui/core/styles/colorManipulator`
 -   `mapbox-gl`
+-   `react-mapbox-gl`
 -   `@wq/react`
 -   `@wq/material`
 -   `@wq/map`
