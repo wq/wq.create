@@ -52,6 +52,7 @@ In addition to keeping bundle sizes small, @wq/rollup-plugin helps ensure that t
 
 -   `react`
 -   `react-dom`
+-   `react-is`
 -   `prop-types`
 -   `formik`
 -   `@material-ui/utils`
