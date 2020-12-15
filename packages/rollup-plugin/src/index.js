@@ -80,7 +80,7 @@ module.exports = function wq() {
             }
             if (
                 importer &&
-                importer.match('@material-ui/core') &&
+                importer.match(/@material-ui.core/) &&
                 muiCoreImports[id]
             ) {
                 id = muiCoreImports[id];
