@@ -1,4 +1,4 @@
-from wq.core import wq
+from wq.build import wq
 import click
 import os
 import shutil
@@ -13,7 +13,7 @@ except ImportError:
     pass
 
 
-template = resource_filename('wq.start', 'django_project')
+template = resource_filename('wq.create', 'django_project')
 # resource_filename not returning absolute path after pip install
 if os.sep not in template:
     import wq as wq_module
@@ -26,7 +26,7 @@ class StartProjectCommand(startproject.Command):
         parser.add_argument('--domain', help="Web Domain")
         parser.add_argument('--with-gis', help="Enable GeoDjango")
         parser.add_argument('--with-npm', help="Enable NPM")
-        parser.add_argument('--wq-start-version', help="wq start version")
+        parser.add_argument('--wq-create-version', help="wq create version")
 
 
 @wq.command()
@@ -42,8 +42,8 @@ class StartProjectCommand(startproject.Command):
     "--with-npm/--without-npm", default=None,
     help="Enable NPM (& Create React App)"
 )
-def start(project_name, destination, domain=None,
-          with_gis=None, with_npm=None):
+def create(project_name, destination, domain=None,
+           with_gis=None, with_npm=None):
     """
     Start a new project with wq.app and wq.db.  A new Django project will be
     created from a wq-specific template.  Any options not specified via
@@ -102,7 +102,7 @@ def start(project_name, destination, domain=None,
         template=template,
         extensions="py,yml,conf,html,sh,js,css,json,xml,gitignore".split(","),
         domain=domain,
-        wq_start_version=VERSION,
+        wq_create_version=VERSION,
         with_gis=with_gis,
         with_npm=with_npm,
     )
@@ -155,3 +155,24 @@ def start(project_name, destination, domain=None,
     )
 
     click.echo("Run ./deploy.sh 0.0.0 to finish initial setup.")
+
+
+@wq.command()
+@click.argument("project_name", required=False)
+@click.argument("destination", required=False)
+@click.option(
+    "-d", "--domain", help='Web domain (e.g. example.wq.io)'
+)
+@click.option(
+    "--with-gis/--without-gis", default=None, help="Enable GeoDjango"
+)
+@click.option(
+    "--with-npm/--without-npm", default=None,
+    help="Enable NPM (& Create React App)"
+)
+def start(project_name, destination, domain=None,
+          with_gis=None, with_npm=None):
+    """
+    (DEPRECATED) Alias for wq create.
+    """
+    create(project_name, destination, domain, with_gis, with_npm)

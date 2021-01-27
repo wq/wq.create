@@ -1,4 +1,4 @@
-from wq.core import wq
+from wq.build import wq
 import click
 import os
 from xlsconv import parse_xls, xls2django, xls2html, html_context, render
@@ -217,7 +217,7 @@ def maketemplates(input_dir, django_dir, template_dir, overwrite):
         templates/[model_name]_list.html
 
     The `wq maketemplates` command is deprecated, and will be removed
-    in wq.start 2.0, as will all support for @wq/jquery-mobile.  The new
+    in wq.create 2.0, as will all support for @wq/jquery-mobile.  The new
     @wq/react + @wq/material renderer uses React components instead of
     template strings.
     """
