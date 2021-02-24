@@ -40,6 +40,12 @@ const prefix = '\0wq-bundle:',
             name: 'ReactMapboxGl',
             hasDefault: true
         },
+        '@mapbox/mapbox-gl-draw': {
+            name: 'MapboxDraw'
+        },
+        'react-mapbox-gl-draw': {
+            name: 'DrawControl'
+        },
         '@wq/app': {
             name: 'app'
         },
