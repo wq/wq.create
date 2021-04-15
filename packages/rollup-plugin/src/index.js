@@ -61,8 +61,8 @@ const prefix = '\0wq-bundle:',
             name: 'map',
             hasDefault: true
         },
-        '@wq/mapbox': {
-            name: 'mapbox',
+        '@wq/map-gl': {
+            name: 'mapgl',
             hasDefault: true
         }
     },
