@@ -11,11 +11,11 @@ export default {
     },
     material: {
         theme: {
-            primary: '#550099',
-            secondary: '#0dccb1'
+            primary: '#7500ae',
+            secondary: '#0088bd'
         }
     },
     map: {
-	bounds: [[44.7, -93.6], [45.2, -92.8]]
+	bounds: [[-93.6, 44.7], [-92.8, 45.2]]
     }
 }

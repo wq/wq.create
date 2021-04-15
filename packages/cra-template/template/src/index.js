@@ -1,12 +1,12 @@
 import app from '@wq/app';
 import material from '@wq/material';
-import mapbox from '@wq/mapbox';
+import mapgl from '@wq/map-gl';
 
 import config from './config';
 import { version } from '../package.json';
 import * as serviceWorker from './serviceWorker';
 
-app.use([material, mapbox]);
+app.use([material, mapgl]);
 app.use({
     context() {
         return { version };
