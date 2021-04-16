@@ -1,0 +1,110 @@
+name: Tests
+
+on: [push, pull_request]
+
+jobs:
+  create:
+    name: ${{ matrix.variant }}
+    runs-on: ubuntu-20.04
+    env:
+      TEST_VARIANT: ${{ matrix.variant }}
+    strategy:
+      matrix:
+        variant: [spatialite, postgis, npm]
+        python-version: [3.9]
+        django-version: [3.2]
+        drf-version: [3.12.4]
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        submodules: true
+        fetch-depth: 0
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        python -m pip install flake8 pytest wheel
+        python -m pip install django==${{ matrix.django-version }}
+        python -m pip install djangorestframework==${{ matrix.drf-version }}
+        python -m pip install xlsconv
+        python -m pip install git+https://github.com/wq/wq.build.git#egg=wq.build
+        python -m pip install git+https://github.com/wq/wq.app.git#egg=wq.app
+        python -m pip install git+https://github.com/wq/wq.db.git#egg=wq.db
+        python -m pip install .
+    - name: Lint with flake8
+      run: |
+        # stop the build if there are Python syntax errors or undefined names
+        flake8 . --exclude django_project,tests --count --select=E9,F63,F7,F82 --show-source --statistics
+        # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
+        flake8 . --exclude django_project,tests --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+    - name: Set up SpatiaLite
+      if: ${{ matrix.variant != 'postgis' }}
+      run: |
+         sudo apt-get update
+         sudo apt-get install libsqlite3-mod-spatialite gdal-bin
+    - name: Set up PostgreSQL
+      if: ${{ matrix.variant == 'postgis' }}
+      run: |
+        sudo sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list'
+        sudo apt-get update
+        sudo apt-get install postgresql-13-postgis-3
+        # postgresql is already installed on image
+        sudo systemctl start postgresql.service
+        sudo -u postgres createuser --superuser $USER
+        createdb test_project
+        psql test_project -c "CREATE EXTENSION postgis;"
+        python -m pip install psycopg2-binary
+    - name: CLI Tests
+      run: |
+        cd tests
+        ./test-deploy.sh
+  npm:
+    name: "@wq/${{ matrix.package }}"
+    runs-on: ubuntu-20.04
+    env:
+      PACKAGE: ${{ matrix.package }}
+    strategy:
+      matrix:
+        python-version: [3.9]
+        node-version: [14]
+        package:
+          - cra-template
+          - rollup-plugin
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+    - name: Set up Node ${{ matrix.node-version }}
+      uses: actions/setup-node@v2
+      with:
+        node-version: ${{ matrix.node-version }}
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Install dependencies
+      if: ${{ matrix.package != 'cra-template' }}
+      run: |
+        cd packages/$PACKAGE
+        npm ci
+    - name: Lint with ESLint
+      if: ${{ matrix.package != 'cra-template' }}
+      run: |
+        cd packages/$PACKAGE
+        npm run lint
+    - name: Test with Jest
+      if: ${{ matrix.package != 'cra-template' }}
+      run: |
+         cd packages/$PACKAGE
+         npm run test
+    - name: Publish to Github Packages
+      if: ${{ github.event_name == 'push' }}
+      run: |
+         ./set_dev_version.sh
+         cd packages/$PACKAGE
+         echo "registry=https://npm.pkg.github.com/wq" > .npmrc
+         echo "//npm.pkg.github.com/:_authToken=${{ secrets.GITHUB_TOKEN }}" >> .npmrc
+         npm publish

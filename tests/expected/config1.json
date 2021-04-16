@@ -8,5 +8,12 @@
             "name": "logout",
             "url": "logout"
         }
+    },
+    "router": {
+        "base_url": ""
+    },
+    "store": {
+        "service": "",
+        "defaults": {"format": "json"}
     }
 }

@@ -6,29 +6,30 @@ rm -rf test_project
 rm -rf output
 mkdir output
 
-if [ "$POSTGRES" ]; then
-    dropdb -Upostgres test_project --if-exists
-    createdb -Upostgres test_project
-    psql -Upostgres test_project -c "CREATE EXTENSION postgis";
-
+if [[ "$TEST_VARIANT" == "postgis" ]]; then
     export DJANGO_SETTINGS_MODULE="test_project.settings.prod"
+    GIS_FLAG="--with-gis"
+elif [[ "$TEST_VARIANT" == "spatialite" ]]; then
+    GIS_FLAG="--with-gis"
+else
+    # FIXME: Support testing non-gis build
+    GIS_FLAG="--with-gis"
 fi;
+
 
 MANAGE="test_project/db/manage.py"
 PORT=8000
 
-# wq start: Create new project
+# wq create: Create new project
 rm -rf test_project
 
-GIS_FLAG="--with-gis"
-
-if [ "$WITH_NPM" ]; then
+if [[ "$TEST_VARIANT" == "npm" ]]; then
     NPM_FLAG="--with-npm"
 else
     NPM_FLAG="--without-npm"
 fi;
 
-wq start test_project ./test_project -d test.wq.io $NPM_FLAG $GIS_FLAG
+wq create test_project ./test_project -d test.wq.io $NPM_FLAG $GIS_FLAG
 
 # Verify ./deploy.sh works
 cd test_project
@@ -36,8 +37,8 @@ cd test_project
 cd ..;
 
 # Load db and verify initial config
-if [ "$POSTGRES" ]; then
-    sed -i "s/'USER': 'test_project'/'USER': 'postgres'/" test_project/db/test_project/settings/prod.py
+if [[ "$TEST_VARIANT" == "postgis" ]]; then
+    sed -i "s/'USER': 'test_project'/'USER': '$USER'/" test_project/db/test_project/settings/prod.py
     sed -i "s/ALLOWED_HOSTS.*/ALLOWED_HOSTS = ['localhost']/" test_project/db/test_project/settings/prod.py
 fi;
 $MANAGE migrate

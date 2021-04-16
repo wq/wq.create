@@ -6,7 +6,7 @@ const { '@wq/app': app } = modules;
 const { '@wq/material': material } = modules;
 const materialPlugin = material.default;
 
-const { '@wq/mapbox': mapbox } = modules;
-const mapboxPlugin = mapbox.default;
+const { '@wq/map-gl': mapgl } = modules;
+const mapglPlugin = mapgl.default;
 
-app.use([materialPlugin, mapboxPlugin, myPlugin]);
+app.use([materialPlugin, mapglPlugin, myPlugin]);

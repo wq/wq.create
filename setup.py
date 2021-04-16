@@ -2,7 +2,7 @@ import os
 from setuptools import setup
 
 LONG_DESCRIPTION = """
-Project scaffolding tools for creating a new crowdsourcing or citizen science application with the wq framework.
+Project scaffolding tools for creating a new application with the wq framework.
 """
 
 
@@ -40,6 +40,7 @@ def list_package_data(root):
             if name not in ('.git', 'package-lock.json')
         ])
     return paths
+
 
 create_wq_namespace()
 

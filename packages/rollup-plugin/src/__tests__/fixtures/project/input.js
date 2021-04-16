@@ -1,6 +1,6 @@
 import app from '@wq/app';
 import material from '@wq/material';
-import mapbox from '@wq/mapbox';
+import mapgl from '@wq/map-gl';
 import myPlugin from './plugin.js';
 
-app.use([material, mapbox, myPlugin]);
+app.use([material, mapgl, myPlugin]);

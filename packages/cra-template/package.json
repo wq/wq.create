@@ -5,7 +5,7 @@
     "main": "template.json",
     "repository": {
         "type": "git",
-        "url": "https://github.com/wq/wq.start.git",
+        "url": "https://github.com/wq/wq.create.git",
 	"directory": "packages/cra-template"
     },
     "keywords": [
@@ -19,9 +19,9 @@
     "author": "S. Andrew Sheppard",
     "license": "MIT",
     "bugs": {
-        "url": "https://github.com/wq/wq.start/issues"
+        "url": "https://github.com/wq/wq.create/issues"
     },
-    "homepage": "https://wq.io/wq.start",
+    "homepage": "https://wq.io/@wq/cra-template",
     "files": [
         "template",
 	"template.json"

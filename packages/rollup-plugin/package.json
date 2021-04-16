@@ -10,7 +10,7 @@
     },
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/wq/wq.start.git",
+        "url": "git+https://github.com/wq/wq.create.git",
         "directory": "packages/rollup-plugin"
     },
     "keywords": [
@@ -24,9 +24,9 @@
     "author": "S. Andrew Sheppard",
     "license": "MIT",
     "bugs": {
-        "url": "https://github.com/wq/wq.start/issues"
+        "url": "https://github.com/wq/wq.create/issues"
     },
-    "homepage": "https://wq.io/wq.start",
+    "homepage": "https://wq.io/@wq/rollup-plugin",
     "dependencies": {},
     "devDependencies": {
         "@babel/core": "^7.12.3",

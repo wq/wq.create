@@ -91,7 +91,7 @@
                 {
                     "hint": "The site where the observation was taken",
                     "name": "location",
-                    "type": "string",
+                    "type": "select one",
                     "wq:ForeignKey": "location",
                     "label": "Site"
                 },
@@ -123,5 +123,12 @@
             "name": "logout",
             "url": "logout"
         }
+    },
+    "router": {
+        "base_url": ""
+    },
+    "store": {
+        "service": "",
+        "defaults": {"format": "json"}
     }
 }
