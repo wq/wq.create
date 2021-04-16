@@ -1,5 +1,12 @@
 {
+    "site_title": "test Project",
     "pages": {
+        "index": {
+            "url": "",
+            "name": "index",
+            "verbose_name": "test Project",
+            "show_in_index": false
+        },
         "location": {
             "name": "location",
             "verbose_name": "location",

@@ -29,7 +29,7 @@ else
     NPM_FLAG="--without-npm"
 fi;
 
-wq create test_project ./test_project -d test.wq.io $NPM_FLAG $GIS_FLAG
+wq create test_project ./test_project -d test.wq.io -t "test Project" $NPM_FLAG $GIS_FLAG
 
 # Verify ./deploy.sh works
 cd test_project

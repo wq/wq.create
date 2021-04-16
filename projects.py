@@ -24,6 +24,7 @@ class StartProjectCommand(startproject.Command):
     def add_arguments(self, parser):
         super(StartProjectCommand, self).add_arguments(parser)
         parser.add_argument('--domain', help="Web Domain")
+        parser.add_argument('--title', help="Site Title")
         parser.add_argument('--with-gis', help="Enable GeoDjango")
         parser.add_argument('--with-npm', help="Enable NPM")
         parser.add_argument('--wq-create-version', help="wq create version")
@@ -36,13 +37,16 @@ class StartProjectCommand(startproject.Command):
     "-d", "--domain", help='Web domain (e.g. example.wq.io)'
 )
 @click.option(
+    "-t", "--title", help="Site title + App label"
+)
+@click.option(
     "--with-gis/--without-gis", default=None, help="Enable GeoDjango"
 )
 @click.option(
     "--with-npm/--without-npm", default=None,
     help="Enable NPM (& Create React App)"
 )
-def create(project_name, destination, domain=None,
+def create(project_name, destination, domain=None, title=None,
            with_gis=None, with_npm=None):
     """
     Start a new project with wq.app and wq.db.  A new Django project will be
@@ -57,10 +61,10 @@ def create(project_name, destination, domain=None,
 
     See https://wq.io/docs/setup for more tips on getting started with wq.
     """
-    do_create(project_name, destination, domain, with_gis, with_npm)
+    do_create(project_name, destination, domain, title, with_gis, with_npm)
 
 
-def do_create(project_name, destination, domain, with_gis, with_npm):
+def do_create(project_name, destination, domain, title, with_gis, with_npm):
     any_prompts = False
 
     if project_name is None:
@@ -82,6 +86,16 @@ def do_create(project_name, destination, domain, with_gis, with_npm):
             'Web domain',
             default='{}.example.org'.format(project_name)
         )
+
+    if title is None:
+        any_prompts = True
+        title = click.prompt(
+            'Site title + App label',
+            default='{} Project'.format(project_name)
+        )
+    elif title == '__old__':
+        title = '{} Project'.format(project_name)
+
 
     if with_gis is None:
         any_prompts = True
@@ -106,6 +120,7 @@ def do_create(project_name, destination, domain, with_gis, with_npm):
         template=template,
         extensions="py,yml,conf,html,sh,js,css,json,xml,gitignore".split(","),
         domain=domain,
+        title=title,
         wq_create_version=VERSION,
         with_gis=with_gis,
         with_npm=with_npm,
@@ -128,6 +143,16 @@ def do_create(project_name, destination, domain, with_gis, with_npm):
             os.path.join(path, project_name),
             os.path.join(path, 'app'),
         )
+        for filename in ('index.html', 'manifest.json'):
+            filepath = os.path.join(path, 'app', 'public', filename)
+            with open(filepath) as f:
+                content = f.read()
+
+            content = content.replace('{{ title }}', title)
+            content = content.replace('{{ project_name }}', project_name)
+
+            with open(filepath, 'w') as f:
+                f.write(content)
     else:
         os.remove(os.path.join(path, 'app', 'README.md'))
 
@@ -180,4 +205,4 @@ def start(project_name, destination, domain=None,
     (DEPRECATED) Alias for wq create.
     """
     click.echo('This command is deprecated.  Use "wq create" instead.')
-    do_create(project_name, destination, domain, with_gis, with_npm)
+    do_create(project_name, destination, domain, '__old__', with_gis, with_npm)
