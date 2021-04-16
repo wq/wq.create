@@ -1,7 +1,7 @@
-import config from './data/config';
+import wqConfig from './data/config';
 
-export default {
-    ...config,
+const config = {
+    ...wqConfig,
     router: {
         'base_url': ''
     },
@@ -19,3 +19,5 @@ export default {
 	bounds: [[-93.6, 44.7], [-92.8, 45.2]]
     }
 }
+
+export default config;
