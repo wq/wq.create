@@ -57,6 +57,10 @@ def create(project_name, destination, domain=None,
 
     See https://wq.io/docs/setup for more tips on getting started with wq.
     """
+    do_create(project_name, destination, domain, with_gis, with_npm)
+
+
+def do_create(project_name, destination, domain, with_gis, with_npm):
     any_prompts = False
 
     if project_name is None:
@@ -175,4 +179,5 @@ def start(project_name, destination, domain=None,
     """
     (DEPRECATED) Alias for wq create.
     """
-    create(project_name, destination, domain, with_gis, with_npm)
+    click.echo('This command is deprecated.  Use "wq create" instead.')
+    do_create(project_name, destination, domain, with_gis, with_npm)
