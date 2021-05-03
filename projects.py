@@ -59,7 +59,7 @@ def create(project_name, destination, domain=None, title=None,
         sudo chown www-data media/
         ./deploy.sh 0.0.0
 
-    See https://wq.io/docs/setup for more tips on getting started with wq.
+    See https://wq.io/overview/setup for more tips on getting started with wq.
     """
     do_create(project_name, destination, domain, title, with_gis, with_npm)
 
