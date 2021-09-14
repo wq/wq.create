@@ -40,13 +40,18 @@ from pyxform.question_type_dictionary import QUESTION_TYPE_DICT as QTYPES
     help="Generate admin.py",
 )
 @click.option(
+    "--with-wizard/--no-wizard",
+    default=False,
+    help="Generate wizard.py",
+)
+@click.option(
     "--force", "-f",
     is_flag=True,
     default=False,
     help="Answer yes to all prompts",
 )
 def addform(xlsform, input_dir, django_dir, template_dir,
-            form_name, with_admin, force):
+            form_name, with_admin, with_wizard, force):
     """
     Convert an XLSForm into a Django app for wq.  Generates Python and mustache
     files including:
@@ -112,6 +117,12 @@ def addform(xlsform, input_dir, django_dir, template_dir,
         create_file(
             [django_dir, form_name, 'admin.py'],
             xls2django(xlsform, 'admin'),
+            overwrite=force,
+        )
+    if with_wizard:
+        create_file(
+            [django_dir, form_name, 'wizard.py'],
+            xls2django(xlsform, 'wizard'),
             overwrite=force,
         )
 
