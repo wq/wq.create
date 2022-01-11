@@ -1,31 +1,65 @@
 {
-    "site_title": "test Project",
     "pages": {
-        "index": {
-            "url": "",
-            "name": "index",
-            "verbose_name": "test Project",
-            "show_in_index": false
+        "login": {
+            "url": "login",
+            "name": "login"
+        },
+        "logout": {
+            "url": "logout",
+            "name": "logout"
         },
         "location": {
+            "map": [
+                {
+                    "mode": "list",
+                    "autoLayers": true,
+                    "layers": []
+                },
+                {
+                    "mode": "detail",
+                    "autoLayers": true,
+                    "layers": []
+                },
+                {
+                    "mode": "edit",
+                    "layers": [
+                        {
+                            "type": "geojson",
+                            "name": "geometry",
+                            "url": "locations/{{id}}/edit.geojson",
+                            "draw": {
+                                "circle": false,
+                                "marker": {},
+                                "polyline": false,
+                                "polygon": false,
+                                "rectangle": false
+                            },
+                            "geometryField": "geometry",
+                            "flatten": true
+                        }
+                    ]
+                }
+            ],
             "name": "location",
-            "verbose_name": "location",
-            "verbose_name_plural": "locations",
             "url": "locations",
             "list": true,
             "form": [
                 {
-                    "hint": "The unique name of the site",
                     "name": "name",
-                    "type": "text",
                     "label": "Site Name",
                     "bind": {
                         "required": true
-                    }
+                    },
+                    "hint": "The unique name of the site",
+                    "type": "text"
                 },
                 {
-                    "hint": "Site classification",
                     "name": "type",
+                    "label": "Site Type",
+                    "bind": {
+                        "required": true
+                    },
+                    "hint": "Site classification",
                     "choices": [
                         {
                             "name": "water",
@@ -40,102 +74,89 @@
                             "label": "Land"
                         }
                     ],
-                    "type": "select one",
-                    "label": "Site Type",
-                    "bind": {
-                        "required": true
-                    }
+                    "type": "select one"
                 },
                 {
-                    "hint": "The location of the site",
                     "name": "geometry",
-                    "type": "geopoint",
                     "label": "Location",
                     "bind": {
                         "required": true
-                    }
+                    },
+                    "hint": "The location of the site",
+                    "type": "geopoint"
                 }
             ],
-            "map": [
-                {
-                    "mode": "list",
-                    "layers": [],
-                    "autoLayers": true
-                },
-                {
-                    "mode": "detail",
-                    "layers": [],
-                    "autoLayers": true
-                },
-                {
-                    "mode": "edit",
-                    "layers": [
-                        {
-                            "type": "geojson",
-                            "url": "locations/{{id}}/edit.geojson",
-                            "name": "geometry",
-                            "flatten": true,
-                            "geometryField": "geometry",
-                            "draw": {
-                                "marker": {},
-                                "circle": false,
-                                "polyline": false,
-                                "rectangle": false,
-                                "polygon": false
-                            }
-                        }
-                    ]
-                }
-            ]
+            "verbose_name": "location",
+            "verbose_name_plural": "locations"
         },
         "observation": {
             "name": "observation",
-            "verbose_name": "observation",
-            "verbose_name_plural": "observations",
             "url": "observations",
             "list": true,
             "form": [
                 {
-                    "hint": "The site where the observation was taken",
                     "name": "location",
+                    "label": "Site",
+                    "hint": "The site where the observation was taken",
                     "type": "select one",
-                    "wq:ForeignKey": "location",
-                    "label": "Site"
+                    "wq:ForeignKey": "location"
                 },
                 {
-                    "hint": "The date when the observation was taken",
                     "name": "date",
-                    "type": "date",
-                    "label": "Date"
+                    "label": "Date",
+                    "hint": "The date when the observation was taken",
+                    "type": "date"
                 },
                 {
                     "name": "photo",
-                    "type": "image",
+                    "label": "Photo",
                     "hint": "Photo of the site",
-                    "label": "Photo"
+                    "type": "image"
                 },
                 {
-                    "hint": "Field observations and notes",
                     "name": "notes",
-                    "type": "text",
-                    "label": "Notes"
+                    "label": "Notes",
+                    "hint": "Field observations and notes",
+                    "type": "text"
                 }
-            ]
+            ],
+            "verbose_name": "observation",
+            "verbose_name_plural": "observations"
         },
-        "login": {
-            "name": "login",
-            "url": "login"
-        },
-        "logout": {
-            "name": "logout",
-            "url": "logout"
+        "index": {
+            "url": "",
+            "name": "index",
+            "show_in_index": false,
+            "verbose_name": "test Project"
         }
     },
+    "site_title": "test Project",
     "router": {
         "base_url": ""
     },
     "store": {
         "service": "",
-        "defaults": {"format": "json"}
-    }
+        "defaults": {
+            "format": "json"
+        }
+    },
+    "material": {
+        "theme": {
+            "primary": "#7500ae",
+            "secondary": "#0088bd"
+        }
+    },
+    "map": {
+        "bounds": [
+            [
+                -180,
+                -70
+            ],
+            [
+                180,
+                70
+            ]
+        ]
+    },
+    "debug": true
 }

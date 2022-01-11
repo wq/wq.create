@@ -30,9 +30,13 @@ else
 fi;
 
 wq create test_project ./test_project -d test.wq.io -t "test Project" $NPM_FLAG $GIS_FLAG
+cd test_project
+
+# Remove example app
+rm -rf db/test_project_survey/
+sed -i "s/'test_project_survey',//" db/test_project/settings/base.py
 
 # Verify ./deploy.sh works
-cd test_project
 ./deploy.sh 0.0.0
 cd ..;
 

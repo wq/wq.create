@@ -1,26 +1,47 @@
 {
-    "site_title": "test Project",
     "pages": {
+        "login": {
+            "url": "login",
+            "name": "login"
+        },
+        "logout": {
+            "url": "logout",
+            "name": "logout"
+        },
         "index": {
             "url": "",
             "name": "index",
-            "verbose_name": "test Project",
-            "show_in_index": false
-        },
-        "login": {
-            "name": "login",
-            "url": "login"
-        },
-        "logout": {
-            "name": "logout",
-            "url": "logout"
+            "show_in_index": false,
+            "verbose_name": "test Project"
         }
     },
+    "site_title": "test Project",
     "router": {
         "base_url": ""
     },
     "store": {
         "service": "",
-        "defaults": {"format": "json"}
-    }
+        "defaults": {
+            "format": "json"
+        }
+    },
+    "material": {
+        "theme": {
+            "primary": "#7500ae",
+            "secondary": "#0088bd"
+        }
+    },
+    "map": {
+        "bounds": [
+            [
+                -180,
+                -70
+            ],
+            [
+                180,
+                70
+            ]
+        ]
+    },
+    "debug": true
 }
