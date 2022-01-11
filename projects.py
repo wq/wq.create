@@ -96,7 +96,6 @@ def do_create(project_name, destination, domain, title, with_gis, with_npm):
     elif title == '__old__':
         title = '{} Project'.format(project_name)
 
-
     if with_gis is None:
         any_prompts = True
         with_gis = click.confirm(
@@ -135,10 +134,13 @@ def do_create(project_name, destination, domain, title, with_gis, with_npm):
 
     if with_npm:
         shutil.rmtree(os.path.join(path, 'app'))
-        subprocess.check_call(
-            ['npx', 'create-react-app', project_name, '--template', '@wq'],
-            cwd=path
-        )
+        subprocess.check_call([
+            'npx',
+            'create-react-app',
+            project_name,
+            '--template', '@wq',
+            '--scripts-version', '4.0.3'
+        ], cwd=path)
         os.rename(
             os.path.join(path, project_name),
             os.path.join(path, 'app'),
