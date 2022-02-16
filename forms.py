@@ -211,8 +211,8 @@ def addform(xlsform, input_dir, django_dir, template_dir,
     help="Path to shared template directory",
 )
 @click.option(
-    '-f',
     '-overwrite',
+    '-f',
     default=False,
     is_flag=True,
     help="Replace existing templates",

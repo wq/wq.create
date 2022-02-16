@@ -20,6 +20,14 @@ if os.sep not in template:
     template = wq_module.__path__[0] + os.sep + template
 
 
+if os.name == 'nt':
+    NPX_COMMAND = 'npx.cmd'
+    DEPLOY_SCRIPT = 'deploy.bat'
+else:
+    NPX_COMMAND = 'npx'
+    DEPLOY_SCRIPT = './deploy.sh'
+
+
 class StartProjectCommand(startproject.Command):
     def add_arguments(self, parser):
         super(StartProjectCommand, self).add_arguments(parser)
@@ -135,7 +143,7 @@ def do_create(project_name, destination, domain, title, with_gis, with_npm):
     if with_npm:
         shutil.rmtree(os.path.join(path, 'app'))
         subprocess.check_call([
-            'npx',
+            NPX_COMMAND,
             'create-react-app',
             project_name,
             '--template', '@wq',
@@ -185,7 +193,7 @@ def do_create(project_name, destination, domain, title, with_gis, with_npm):
         )
     )
 
-    click.echo("Run ./deploy.sh 0.0.0 to finish initial setup.")
+    click.echo(f"Run {DEPLOY_SCRIPT} 0.0.0 to finish initial setup.")
 
 
 @wq.command()
