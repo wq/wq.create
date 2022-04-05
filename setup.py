@@ -95,6 +95,7 @@ setup(
         'Framework :: Django :: 3.0',
         'Framework :: Django :: 3.1',
         'Framework :: Django :: 3.2',
+        'Framework :: Django :: 4.0',
         'Topic :: Software Development :: Libraries :: Application Frameworks',
         'Topic :: Software Development :: Code Generators',
         'Topic :: Text Processing :: Markup :: HTML',

@@ -12,8 +12,8 @@ jobs:
       matrix:
         variant: [spatialite, postgis, npm]
         python-version: [3.9]
-        django-version: [3.2]
-        drf-version: [3.12.4]
+        django-version: [4.0]
+        drf-version: [3.13.1]
     steps:
     - uses: actions/checkout@v2
       with:
@@ -30,9 +30,9 @@ jobs:
         python -m pip install django==${{ matrix.django-version }}
         python -m pip install djangorestframework==${{ matrix.drf-version }}
         python -m pip install xlsconv
-        python -m pip install git+https://github.com/wq/wq.build.git
-        python -m pip install wq.app==1.3.0b1
-        python -m pip install git+https://github.com/wq/wq.db.git
+        python -m pip install wq.build
+        python -m pip install wq.app
+        python -m pip install wq.db
         python -m pip install .
     - name: Lint with flake8
       run: |
