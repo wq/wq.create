@@ -2,9 +2,9 @@
   "package": {
     "proxy": "http://localhost:8000",
     "dependencies": {
-      "@wq/app": "^1.3.0-beta.1",
-      "@wq/material": "^1.3.0-beta.1",
-      "@wq/map-gl": "^1.3.0-beta.1"
+      "@wq/app": "^1.3.0",
+      "@wq/material": "^1.3.0",
+      "@wq/map-gl": "^1.3.0"
     },
     "eslintConfig": {
       "extends": ["react-app"]
