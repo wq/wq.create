@@ -45,6 +45,11 @@ jobs:
       run: |
          sudo apt-get update
          sudo apt-get install libsqlite3-mod-spatialite gdal-bin
+    - name: Set up Node 14
+      if: ${{ matrix.variant == 'npm' }}
+      uses: actions/setup-node@v2
+      with:
+        node-version: 14
     - name: Set up PostgreSQL
       if: ${{ matrix.variant == 'postgis' }}
       run: |
