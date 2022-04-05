@@ -8,7 +8,45 @@
             "url": "logout",
             "name": "logout"
         },
+        "observation": {
+            "cache": "first_page",
+            "background_sync": true,
+            "name": "observation",
+            "url": "observations",
+            "list": true,
+            "form": [
+                {
+                    "name": "location",
+                    "label": "Site",
+                    "hint": "The site where the observation was taken",
+                    "type": "select one",
+                    "wq:ForeignKey": "location"
+                },
+                {
+                    "name": "date",
+                    "label": "Date",
+                    "hint": "The date when the observation was taken",
+                    "type": "date"
+                },
+                {
+                    "name": "photo",
+                    "label": "Photo",
+                    "hint": "Photo of the site",
+                    "type": "image"
+                },
+                {
+                    "name": "notes",
+                    "label": "Notes",
+                    "hint": "Field observations and notes",
+                    "type": "text"
+                }
+            ],
+            "verbose_name": "observation",
+            "verbose_name_plural": "observations"
+        },
         "location": {
+            "cache": "first_page",
+            "background_sync": true,
             "map": [
                 {
                     "mode": "list",
@@ -22,22 +60,8 @@
                 },
                 {
                     "mode": "edit",
-                    "layers": [
-                        {
-                            "type": "geojson",
-                            "name": "geometry",
-                            "url": "locations/{{id}}/edit.geojson",
-                            "draw": {
-                                "circle": false,
-                                "marker": {},
-                                "polyline": false,
-                                "polygon": false,
-                                "rectangle": false
-                            },
-                            "geometryField": "geometry",
-                            "flatten": true
-                        }
-                    ]
+                    "autoLayers": true,
+                    "layers": []
                 }
             ],
             "name": "location",
@@ -88,40 +112,6 @@
             ],
             "verbose_name": "location",
             "verbose_name_plural": "locations"
-        },
-        "observation": {
-            "name": "observation",
-            "url": "observations",
-            "list": true,
-            "form": [
-                {
-                    "name": "location",
-                    "label": "Site",
-                    "hint": "The site where the observation was taken",
-                    "type": "select one",
-                    "wq:ForeignKey": "location"
-                },
-                {
-                    "name": "date",
-                    "label": "Date",
-                    "hint": "The date when the observation was taken",
-                    "type": "date"
-                },
-                {
-                    "name": "photo",
-                    "label": "Photo",
-                    "hint": "Photo of the site",
-                    "type": "image"
-                },
-                {
-                    "name": "notes",
-                    "label": "Notes",
-                    "hint": "Field observations and notes",
-                    "type": "text"
-                }
-            ],
-            "verbose_name": "observation",
-            "verbose_name_plural": "observations"
         },
         "index": {
             "url": "",

@@ -9,6 +9,8 @@
             "name": "logout"
         },
         "location": {
+            "cache": "first_page",
+            "background_sync": true,
             "map": [
                 {
                     "mode": "list",
@@ -22,22 +24,8 @@
                 },
                 {
                     "mode": "edit",
-                    "layers": [
-                        {
-                            "type": "geojson",
-                            "name": "geometry",
-                            "url": "locations/{{id}}/edit.geojson",
-                            "draw": {
-                                "circle": false,
-                                "marker": {},
-                                "polyline": false,
-                                "polygon": false,
-                                "rectangle": false
-                            },
-                            "geometryField": "geometry",
-                            "flatten": true
-                        }
-                    ]
+                    "autoLayers": true,
+                    "layers": []
                 }
             ],
             "name": "location",
