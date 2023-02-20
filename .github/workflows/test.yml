@@ -5,15 +5,15 @@ on: [push, pull_request]
 jobs:
   create:
     name: ${{ matrix.variant }}
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     env:
       TEST_VARIANT: ${{ matrix.variant }}
     strategy:
       matrix:
         variant: [spatialite, postgis, npm]
-        python-version: [3.9]
-        django-version: [4.0]
-        drf-version: [3.13.1]
+        python-version: ["3.11"]
+        django-version: [4.1.3]
+        drf-version: [3.14.0]
     steps:
     - uses: actions/checkout@v2
       with:
@@ -30,9 +30,9 @@ jobs:
         python -m pip install django==${{ matrix.django-version }}
         python -m pip install djangorestframework==${{ matrix.drf-version }}
         python -m pip install xlsconv
-        python -m pip install wq.build
-        python -m pip install wq.app
-        python -m pip install wq.db
+        python -m pip install wq.build==2.0.0a0
+        python -m pip install wq.app==2.0.0a0
+        python -m pip install wq.db==2.0.0a0
         python -m pip install .
     - name: Lint with flake8
       run: |
@@ -45,14 +45,15 @@ jobs:
       run: |
          sudo apt-get update
          sudo apt-get install libsqlite3-mod-spatialite gdal-bin
-    - name: Set up Node 14
+    - name: Set up Node
       if: ${{ matrix.variant == 'npm' }}
       uses: actions/setup-node@v2
       with:
-        node-version: 14
+        node-version: 18
     - name: Set up PostgreSQL
       if: ${{ matrix.variant == 'postgis' }}
       run: |
+        wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
         sudo sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list'
         sudo apt-get update
         sudo apt-get install postgresql-14-postgis-3
@@ -68,15 +69,16 @@ jobs:
         ./test-deploy.sh
   npm:
     name: "@wq/${{ matrix.package }}"
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     env:
       PACKAGE: ${{ matrix.package }}
     strategy:
       matrix:
-        python-version: [3.9]
-        node-version: [14]
+        python-version: ["3.11"]
+        node-version: [18]
         package:
           - cra-template
+          - expo-template
           - rollup-plugin
     steps:
     - uses: actions/checkout@v2
@@ -91,17 +93,17 @@ jobs:
       with:
         python-version: ${{ matrix.python-version }}
     - name: Install dependencies
-      if: ${{ matrix.package != 'cra-template' }}
+      if: ${{ matrix.package == 'rollup-plugin' }}
       run: |
         cd packages/$PACKAGE
         npm ci
     - name: Lint with ESLint
-      if: ${{ matrix.package != 'cra-template' }}
+      if: ${{ matrix.package == 'rollup-plugin' }}
       run: |
         cd packages/$PACKAGE
         npm run lint
     - name: Test with Jest
-      if: ${{ matrix.package != 'cra-template' }}
+      if: ${{ matrix.package == 'rollup-plugin' }}
       run: |
          cd packages/$PACKAGE
          npm run test

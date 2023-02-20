@@ -1,8 +1,14 @@
-import app from '@wq/app';
-import material from '@wq/material';
-import mapgl from '@wq/map-gl';
-import config from './data/config';
-import * as serviceWorker from './serviceWorker';
+import app from "@wq/app";
+import material from "@wq/material";
+import mapgl from "@wq/map-gl";
+import maplibre from "maplibre-gl";
+import config from "./data/config";
+import * as serviceWorker from "./serviceWorker";
+
+import "maplibre-gl/dist/maplibre-gl.css";
+import "@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css";
+
+mapgl.setEngine(maplibre);
 
 app.use([material, mapgl]);
 

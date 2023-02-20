@@ -20,7 +20,8 @@
                     "label": "Site",
                     "hint": "The site where the observation was taken",
                     "type": "select one",
-                    "wq:ForeignKey": "location"
+                    "wq:ForeignKey": "location",
+                    "wq:related_name": "observation_set"
                 },
                 {
                     "name": "date",

@@ -13,8 +13,7 @@
             "photo": "http://localhost:8000/media/observations/photo.jpg",
             "notes": "A cold winter day in Minneapolis",
             "location_id": 1,
-            "label": "Site 1 on 2015-10-08",
-            "location_label": "Site 1"
+            "label": "Site 1 on 2015-10-08"
         }
     ]
 }

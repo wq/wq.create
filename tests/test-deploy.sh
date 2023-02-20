@@ -34,7 +34,7 @@ cd test_project
 
 # Remove example app
 rm -rf db/test_project_survey/
-sed -i "s/'test_project_survey',//" db/test_project/settings/base.py
+sed -i 's/"test_project_survey",//' db/test_project/settings/base.py
 
 # Verify ./deploy.sh works
 ./deploy.sh 0.0.0
@@ -44,6 +44,9 @@ cd ..;
 if [[ "$TEST_VARIANT" == "postgis" ]]; then
     sed -i "s/'USER': 'test_project'/'USER': '$USER'/" test_project/db/test_project/settings/prod.py
     sed -i "s/ALLOWED_HOSTS.*/ALLOWED_HOSTS = ['localhost']/" test_project/db/test_project/settings/prod.py
+else
+    # See https://code.djangoproject.com/ticket/32935
+    $MANAGE shell -c "import django;django.db.connection.cursor().execute('SELECT InitSpatialMetaData(1);')";
 fi;
 $MANAGE migrate
 $MANAGE dump_config > output/config1.json

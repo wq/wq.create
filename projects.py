@@ -152,8 +152,6 @@ def do_create(project_name, destination, domain, title, with_gis, with_npm):
                 project_name,
                 "--template",
                 "@wq",
-                "--scripts-version",
-                "4.0.3",
             ],
             cwd=path,
         )
