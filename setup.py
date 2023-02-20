@@ -42,6 +42,9 @@ def list_package_data(root):
                 if name not in (".git", "package-lock.json")
             ]
         )
+
+    assert paths, "Missing template data!"
+
     return paths
 
 
