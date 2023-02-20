@@ -194,25 +194,3 @@ def do_create(project_name, destination, domain, title, with_gis, with_npm):
     )
 
     click.echo(f"Run {DEPLOY_SCRIPT} 0.0.0 to finish initial setup.")
-
-
-@wq.command()
-@click.argument("project_name", required=False)
-@click.argument("destination", required=False)
-@click.option(
-    "-d", "--domain", help='Web domain (e.g. example.wq.io)'
-)
-@click.option(
-    "--with-gis/--without-gis", default=None, help="Enable GeoDjango"
-)
-@click.option(
-    "--with-npm/--without-npm", default=None,
-    help="Enable NPM (& Create React App)"
-)
-def start(project_name, destination, domain=None,
-          with_gis=None, with_npm=None):
-    """
-    (DEPRECATED) Alias for wq create.
-    """
-    click.echo('This command is deprecated.  Use "wq create" instead.')
-    do_create(project_name, destination, domain, '__old__', with_gis, with_npm)
