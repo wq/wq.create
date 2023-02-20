@@ -45,13 +45,22 @@ from pyxform.question_type_dictionary import QUESTION_TYPE_DICT as QTYPES
     help="Generate wizard.py",
 )
 @click.option(
-    "--force", "-f",
+    "--force",
+    "-f",
     is_flag=True,
     default=False,
     help="Answer yes to all prompts",
 )
-def addform(xlsform, input_dir, django_dir, template_dir,
-            form_name, with_admin, with_wizard, force):
+def addform(
+    xlsform,
+    input_dir,
+    django_dir,
+    template_dir,
+    form_name,
+    with_admin,
+    with_wizard,
+    force,
+):
     """
     Convert an XLSForm into a Django app for wq.  Generates Python and mustache
     files including:
@@ -71,74 +80,74 @@ def addform(xlsform, input_dir, django_dir, template_dir,
 
     xls_json = parse_xls(xlsform)
     if not form_name:
-        form_name = xls_json['name']
+        form_name = xls_json["name"]
 
     if not os.path.exists(os.path.join(django_dir, form_name)):
         os.mkdir(os.path.join(django_dir, form_name))
 
-    if not os.path.exists(os.path.join(django_dir, form_name, 'migrations')):
-        os.mkdir(os.path.join(django_dir, form_name, 'migrations'))
+    if not os.path.exists(os.path.join(django_dir, form_name, "migrations")):
+        os.mkdir(os.path.join(django_dir, form_name, "migrations"))
 
     create_file(
-        [django_dir, form_name, '__init__.py'],
+        [django_dir, form_name, "__init__.py"],
         "",
         overwrite=force,
     )
 
     create_file(
-        [django_dir, form_name, 'migrations', '__init__.py'],
+        [django_dir, form_name, "migrations", "__init__.py"],
         "",
         overwrite=force,
     )
 
     create_file(
-        [django_dir, form_name, 'models.py'],
-        xls2django(xlsform, 'models'),
+        [django_dir, form_name, "models.py"],
+        xls2django(xlsform, "models"),
         overwrite=force,
     )
 
     has_nested = False
-    for field in xls_json['children']:
-        if field.get('wq:nested', False):
+    for field in xls_json["children"]:
+        if field.get("wq:nested", False):
             has_nested = True
     if has_nested:
         create_file(
-            [django_dir, form_name, 'serializers.py'],
-            xls2django(xlsform, 'serializers'),
+            [django_dir, form_name, "serializers.py"],
+            xls2django(xlsform, "serializers"),
             overwrite=force,
         )
 
     create_file(
-        [django_dir, form_name, 'rest.py'],
-        xls2django(xlsform, 'rest'),
+        [django_dir, form_name, "rest.py"],
+        xls2django(xlsform, "rest"),
         overwrite=force,
     )
     if with_admin:
         create_file(
-            [django_dir, form_name, 'admin.py'],
-            xls2django(xlsform, 'admin'),
+            [django_dir, form_name, "admin.py"],
+            xls2django(xlsform, "admin"),
             overwrite=force,
         )
     if with_wizard:
         create_file(
-            [django_dir, form_name, 'wizard.py'],
-            xls2django(xlsform, 'wizard'),
+            [django_dir, form_name, "wizard.py"],
+            xls2django(xlsform, "wizard"),
             overwrite=force,
         )
 
-    if not input_dir and os.path.exists('../master_templates'):
-        input_dir = '../master_templates'
+    if not input_dir and os.path.exists("../master_templates"):
+        input_dir = "../master_templates"
 
-    if not template_dir and os.path.exists('../templates'):
-        template_dir = '../templates'
+    if not template_dir and os.path.exists("../templates"):
+        template_dir = "../templates"
 
     if input_dir and template_dir:
-        template_types = set(['detail', 'edit', 'list'])
-        for field in xls_json['children']:
-            if 'geo' in field['type']:
-                if 'popup' in template_types:
+        template_types = set(["detail", "edit", "list"])
+        for field in xls_json["children"]:
+            if "geo" in field["type"]:
+                if "popup" in template_types:
                     print("Warning: multiple geometry fields found.")
-                template_types.add('popup')
+                template_types.add("popup")
         for tmpl in template_types:
             create_file(
                 [template_dir, "%s_%s.html" % (form_name, tmpl)],
@@ -149,10 +158,10 @@ def addform(xlsform, input_dir, django_dir, template_dir,
     settings_path = None
     for path, dirs, files in os.walk(django_dir):
         for filename in files:
-            if filename == 'settings.py':
+            if filename == "settings.py":
                 settings_path = (path, filename)
-            elif path.endswith('/settings') and filename == 'base.py':
-                settings_path = (path[:-9], 'settings', filename)
+            elif path.endswith("/settings") and filename == "base.py":
+                settings_path = (path[:-9], "settings", filename)
 
     if not settings_path:
         return
@@ -161,10 +170,10 @@ def addform(xlsform, input_dir, django_dir, template_dir,
     app_section = False
     has_app = False
     for row in open(os.path.join(*settings_path)):
-        if 'INSTALLED_APPS' in row:
+        if "INSTALLED_APPS" in row:
             app_section = True
         elif app_section:
-            if ')' in row or ']' in row:
+            if ")" in row or "]" in row:
                 app_section = False
                 if not has_app:
                     new_settings.append(
@@ -177,34 +186,37 @@ def addform(xlsform, input_dir, django_dir, template_dir,
     create_file(
         settings_path, "".join(new_settings), overwrite=force, show_diff=True
     )
-    result = subprocess.check_output(
-        [os.path.join(django_dir, 'manage.py'), 'makemigrations']
-    ).decode('utf-8').strip()
+    result = (
+        subprocess.check_output(
+            [os.path.join(django_dir, "manage.py"), "makemigrations"]
+        )
+        .decode("utf-8")
+        .strip()
+    )
     print(result)
-    if 'No changes' in result:
+    if "No changes" in result:
         return
     migrate = force or click.confirm("Update database schema?", default=True)
     if not migrate:
         return
-    subprocess.call(
-        [os.path.join(django_dir, 'manage.py'), 'migrate']
-    )
+    subprocess.call([os.path.join(django_dir, "manage.py"), "migrate"])
 
 
-def create_file(path, contents, overwrite=False,
-                show_diff=False, previous_diff=False):
+def create_file(
+    path, contents, overwrite=False, show_diff=False, previous_diff=False
+):
     filename = os.path.join(*path)
     has_diff = previous_diff
     if os.path.exists(filename) and not overwrite:
-        existing_file = open(filename, 'r')
+        existing_file = open(filename, "r")
         existing_content = existing_file.read()
         if existing_content.strip() == contents.strip():
             return False
 
         def print_diff():
             diff = unified_diff(
-                existing_content.split('\n'),
-                contents.split('\n'),
+                existing_content.split("\n"),
+                contents.split("\n"),
                 fromfile="%s (current)" % path[-1],
                 tofile="%s (new)" % path[-1],
             )
@@ -214,41 +226,41 @@ def create_file(path, contents, overwrite=False,
         if show_diff:
             print_diff()
             message = "Update %s? [Y/n/d/?]"
-            default_choice = 'y'
+            default_choice = "y"
         else:
             if not previous_diff:
-                choice = click.prompt('Update templates? [y/n]')
-                if choice.lower() != 'y':
+                choice = click.prompt("Update templates? [y/n]")
+                if choice.lower() != "y":
                     print("Skipping template updates.")
-                    return 'skipall'
+                    return "skipall"
 
             message = "%s already exists; overwrite? [y/n/d/?]"
             default_choice = None
 
         has_diff = True
-        choice = ''
-        while choice.lower() not in ('y', 'n'):
-            if path[-2] == 'settings':
+        choice = ""
+        while choice.lower() not in ("y", "n"):
+            if path[-2] == "settings":
                 filename = os.path.join(*path[-2:])
             else:
                 filename = path[-1]
             choice = click.prompt(
                 message % filename, default=default_choice, show_default=False
             )
-            if choice == '' and show_diff:
-                choice = 'y'
-            if choice.lower() == 'n':
+            if choice == "" and show_diff:
+                choice = "y"
+            if choice.lower() == "n":
                 return has_diff
-            elif choice.lower() == '?':
+            elif choice.lower() == "?":
                 print(
-                    '  y - overwrite\n'
-                    '  n - skip\n'
-                    '  d - show diff\n'
-                    '  ? - show help'
+                    "  y - overwrite\n"
+                    "  n - skip\n"
+                    "  d - show diff\n"
+                    "  ? - show help"
                 )
-            elif choice.lower() == 'd':
+            elif choice.lower() == "d":
                 print_diff()
-    out = open(os.path.join(*path), 'w')
+    out = open(os.path.join(*path), "w")
     out.write(contents)
     out.close()
     return has_diff
