@@ -3,6 +3,9 @@ const prefix = "\0wq-bundle:",
         react: {
             name: "React",
         },
+        "react/jsx-runtime": {
+            name: "jsxRuntime",
+        },
         "react-dom": {
             name: "ReactDOM",
         },
@@ -15,23 +18,17 @@ const prefix = "\0wq-bundle:",
         formik: {
             name: "formik",
         },
-        "@material-ui/styles": {
-            name: "muiStyles",
+        "@emotion/styled": {
+            name: "emStyled",
         },
-        "@material-ui/utils": {
+        "@emotion/react": {
+            name: "emReact",
+        },
+        "@mui/utils": {
             name: "muiUtils",
         },
-        "@material-ui/core/ButtonBase": {
-            name: "ButtonBase",
-        },
-        "@material-ui/core/Paper": {
-            name: "Paper",
-        },
-        "@material-ui/core/styles/withStyles": {
-            name: "withStyles",
-        },
-        "@material-ui/core/styles/colorManipulator": {
-            name: "colorManipulator",
+        "@mui/material": {
+            name: "muiMaterial",
         },
         "mapbox-gl": {
             name: "MapboxGL",
@@ -65,31 +62,17 @@ const prefix = "\0wq-bundle:",
             name: "mapgl",
             hasDefault: true,
         },
-    },
-    muiCoreImports = {};
-
-Object.keys(modules)
-    .filter((id) => id.match("@material-ui/core"))
-    .forEach(
-        (id) => (muiCoreImports[id.replace("@material-ui/core", "..")] = id)
-    );
+    };
 
 module.exports = function wq() {
     return {
         name: "@wq/rollup-plugin",
-        resolveId(id, importer) {
+        resolveId(id) {
             if (id == "./wq.js") {
                 return { id, external: true };
             }
             if (id.match(/\?commonjs-proxy$/)) {
                 id = id.replace(/^\0/, "").replace(/\?commonjs-proxy$/, "");
-            }
-            if (
-                importer &&
-                importer.match(/@material-ui.core/) &&
-                muiCoreImports[id]
-            ) {
-                id = muiCoreImports[id];
             }
             if (modules[id]) {
                 return {

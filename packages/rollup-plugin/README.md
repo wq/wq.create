@@ -6,6 +6,5 @@
 
 [logo]: https://wq.io/images/@wq/rollup-plugin.svg
 [docs]: https://wq.io/@wq/rollup-plugin
-
 [wq.app]: https://wq.io/wq.app/
 [wq]: https://wq.io/wq/
