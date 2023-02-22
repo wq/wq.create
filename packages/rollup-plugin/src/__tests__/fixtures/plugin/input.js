@@ -1,24 +1,24 @@
-import Test from './Component';
+import Test from "./Component";
 
 export default {
-    name: 'myPlugin',
+    name: "myPlugin",
     actions: {
         setValues(payload) {
             return {
-                type: 'MYPLUGIN_SET_VALUES',
-                payload
+                type: "MYPLUGIN_SET_VALUES",
+                payload,
             };
-        }
+        },
     },
     reducer(state, action) {
         switch (action.type) {
-            case 'MYPLUGIN_SET_VALUES':
+            case "MYPLUGIN_SET_VALUES":
                 return { values: action.payload };
             default:
                 return state || { values: [] };
         }
     },
     components: {
-        Test
-    }
+        Test,
+    },
 };

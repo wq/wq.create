@@ -43,10 +43,7 @@
     },
     "prettier": {
         "filepath": "input.js",
-        "trailingComma": "none",
-        "arrowParens": "avoid",
-        "tabWidth": 4,
-        "singleQuote": true
+        "tabWidth": 4
     },
     "babel": {
         "presets": [
