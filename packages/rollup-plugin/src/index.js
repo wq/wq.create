@@ -30,18 +30,12 @@ const prefix = "\0wq-bundle:",
         "@mui/material": {
             name: "muiMaterial",
         },
-        "mapbox-gl": {
-            name: "MapboxGL",
-        },
-        "react-mapbox-gl": {
-            name: "ReactMapboxGl",
+        "react-map-gl": {
+            name: "ReactMapGL",
             hasDefault: true,
         },
         "@mapbox/mapbox-gl-draw": {
             name: "MapboxDraw",
-        },
-        "react-mapbox-gl-draw": {
-            name: "DrawControl",
         },
         "@wq/app": {
             name: "app",
@@ -64,7 +58,7 @@ const prefix = "\0wq-bundle:",
         },
     };
 
-module.exports = function wq() {
+export default function wq() {
     return {
         name: "@wq/rollup-plugin",
         resolveId(id) {
@@ -87,7 +81,7 @@ module.exports = function wq() {
             }
         },
     };
-};
+}
 
 function createVirtualModule(id) {
     const { name, hasDefault } = modules[id];
