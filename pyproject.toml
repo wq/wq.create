@@ -1,0 +1,60 @@
+[build-system]
+requires = ["setuptools", "setuptools-scm"]
+
+[project]
+name = "wq.create"
+dynamic = ["version"]
+authors = [
+    {name = "S. Andrew Sheppard", email = "andrew@wq.io"},
+]
+description = "Project scaffolding tools for creating a new application with the wq framework."
+readme = "README.md"
+requires-python = ">=3.7"
+license = {text = "MIT"}
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Environment :: Web Environment",
+    "License :: OSI Approved :: MIT License",
+    "Natural Language :: English",
+    "Programming Language :: JavaScript",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Framework :: Django",
+    "Framework :: Django :: 3.2",
+    "Framework :: Django :: 4.0",
+    "Framework :: Django :: 4.1",
+    "Topic :: Software Development :: Libraries :: Application Frameworks",
+    "Topic :: Software Development :: Code Generators",
+    "Topic :: Text Processing :: Markup :: HTML",
+    "Topic :: Software Development :: Build Tools",
+    "Topic :: Software Development :: Pre-processors",
+]
+dependencies = [
+    "wq.build",
+    "psycopg2-binary",
+    "xlsconv>=1.2.0",
+]
+
+[project.entry-points.wq]
+"wq.create" = "wq.create"
+
+[project.urls]
+Homepage = "https://wq.io/wq.create/"
+Documentation = "https://wq.io/"
+Source = "https://github.com/wq/wq.create"
+"Release Notes" = "https://github.com/wq/wq.create/releases"
+Issues = "https://github.com/wq/wq.create/issues"
+CI = "https://github.com/wq/wq.create/actions/workflows/test.yml"
+
+[tool.setuptools.packages.find]
+include = ["wq.create*"]
+exclude = ["wq.create.django_project.*"]
+
+[tool.setuptools.package-data]
+"wq.create.django_project" = [ "**/*", "**/.gitignore" ]
+
+[tool.setuptools_scm]
