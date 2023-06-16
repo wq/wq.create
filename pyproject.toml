@@ -27,6 +27,7 @@ classifiers = [
     "Framework :: Django :: 3.2",
     "Framework :: Django :: 4.0",
     "Framework :: Django :: 4.1",
+    "Framework :: Django :: 4.2",
     "Topic :: Software Development :: Libraries :: Application Frameworks",
     "Topic :: Software Development :: Code Generators",
     "Topic :: Text Processing :: Markup :: HTML",
@@ -34,9 +35,9 @@ classifiers = [
     "Topic :: Software Development :: Pre-processors",
 ]
 dependencies = [
-    "wq.build",
+    "wq.build>=2.0.0a1",
+    "xlsconv>=2.0.0a1,<2.1.0",
     "psycopg2-binary",
-    "xlsconv>=1.2.0",
 ]
 
 [project.entry-points.wq]

@@ -6,6 +6,5 @@
 build
 dist
 README.rst
-wq/
 .eggs
 node_modules
