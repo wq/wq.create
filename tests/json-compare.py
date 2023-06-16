@@ -1,11 +1,14 @@
 #!/usr/bin/env python
 import sys
 import json
+import pathlib
 
 file1, file2 = sys.argv[1:]
 
-json1 = json.load(open(file1))
-json2 = json.load(open(file2))
+root = pathlib.Path(__file__).parent
+
+json1 = json.load(open(root / file1))
+json2 = json.load(open(root / file2))
 
 for key in ('debug',):
     json1.pop(key, None)
