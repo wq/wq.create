@@ -2,12 +2,12 @@
   "package": {
     "proxy": "http://localhost:8000",
     "dependencies": {
-      "@wq/app": "^2.0.0-alpha.0",
-      "@wq/material": "^2.0.0-alpha.0",
-      "@wq/material-web": "^2.0.0-alpha.0",
-      "@wq/map-gl": "^2.0.0-alpha.0",
-      "@wq/map-gl-web": "^2.0.0-alpha.0",
-      "maplibre-gl": "^2.4.0"
+      "@wq/app": "^2.0.0-alpha.1",
+      "@wq/material": "^2.0.0-alpha.1",
+      "@wq/material-web": "^2.0.0-alpha.1",
+      "@wq/map-gl": "^2.0.0-alpha.1",
+      "@wq/map-gl-web": "^2.0.0-alpha.1",
+      "maplibre-gl": "^3.1.0"
     },
     "eslintConfig": {
       "extends": ["react-app"]
