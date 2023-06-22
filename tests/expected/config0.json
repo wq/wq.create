@@ -9,6 +9,10 @@
             "name": "logout"
         },
         "category": {
+            "icon": "config",
+            "description": "Manage available categories",
+            "section": "Admin",
+            "show_in_index": "can_change",
             "cache": "all",
             "background_sync": false,
             "name": "category",
@@ -35,6 +39,9 @@
             "label_template": "{{name}}"
         },
         "observation": {
+            "icon": "list",
+            "description": "View and submit photos on map",
+            "section": "Contributions",
             "cache": "first_page",
             "background_sync": true,
             "map": [
@@ -109,6 +116,7 @@
         }
     },
     "site_title": "test Project",
+    "logo": "/icon-192.png",
     "router": {
         "base_url": ""
     },

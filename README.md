@@ -1,6 +1,6 @@
 [![wq.create][logo]][docs]
 
-[**wq.create**][docs] (formerly wq.start) provides a simple command-line interface (`wq create`) for starting a new project with the [wq framework], with [wq.app] for the front end and [wq.db] as the backend.  wq.create also provides a `wq addform` command that can generate and configure new Django apps from an [XLSForm] definition.
+[**wq.create**][docs] provides a simple command-line interface (`wq create`) for starting a new project with the [wq framework], with [wq.app] for the front end and [wq.db] as the backend.  wq.create also provides a `wq addform` command that can generate and configure new Django apps from an [XLSForm] definition.
 
 [![Latest PyPI Release](https://img.shields.io/pypi/v/wq.create.svg)](https://pypi.org/project/wq.create)
 [![Release Notes](https://img.shields.io/github/release/wq/wq.create.svg)](https://github.com/wq/wq.create/releases)

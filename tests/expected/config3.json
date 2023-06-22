@@ -122,6 +122,7 @@
         }
     },
     "site_title": "test Project",
+    "logo": "/icon-192.png",
     "router": {
         "base_url": ""
     },
