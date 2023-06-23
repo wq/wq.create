@@ -1,6 +1,6 @@
 {
     "name": "@wq/rollup-plugin",
-    "version": "2.0.0-alpha.1",
+    "version": "2.0.0-alpha.2",
     "description": "Build custom wq plugins that integrate with wq.js",
     "type": "module",
     "main": "src/index.js",

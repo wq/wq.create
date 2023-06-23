@@ -27,6 +27,9 @@ const prefix = "\0wq-bundle:",
         "@mui/utils": {
             name: "muiUtils",
         },
+        "@mui/material/utils": {
+            name: "muiMaterialUtils",
+        },
         "@mui/material": {
             name: "muiMaterial",
         },
