@@ -31,9 +31,9 @@ jobs:
         python -m pip install django==${{ matrix.django-version }}
         python -m pip install djangorestframework==${{ matrix.drf-version }}
         python -m pip install xlsconv==2.0.0a1
-        python -m pip install wq.build==2.0.0a1
-        python -m pip install wq.app==2.0.0a1
-        python -m pip install wq.db==2.0.0a1
+        python -m pip install wq.build==2.0.0a2
+        python -m pip install wq.app==2.0.0a2
+        python -m pip install wq.db==2.0.0a2
     - name: Test build
       run: |
         python -m build

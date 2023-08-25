@@ -1,6 +1,6 @@
 {
     "name": "@wq/cra-template",
-    "version": "2.0.0-alpha.1",
+    "version": "2.0.0-alpha.2",
     "description": "Create React App template for use with @wq/app",
     "main": "template.json",
     "repository": {

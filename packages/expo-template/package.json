@@ -1,6 +1,6 @@
 {
   "name": "@wq/expo-template",
-  "version": "2.0.0-alpha.0",
+  "version": "2.0.0-alpha.2",
   "main": "src/index.js",
   "repository": {
     "type": "git",
@@ -18,17 +18,24 @@
     "web": "expo start --web"
   },
   "dependencies": {
-    "@wq/app": "^2.0.0-alpha.0",
-    "@wq/map-gl": "^2.0.0-alpha.0",
-    "@wq/map-gl-native": "^2.0.0-alpha.0",
-    "@wq/material": "^2.0.0-alpha.0",
-    "@wq/material-native": "^2.0.0-alpha.0",
-    "expo": "~47.0.12",
-    "expo-status-bar": "~1.4.2",
-    "react": "18.1.0",
-    "react-native": "0.70.5"
-  },
-  "devDependencies": {
-    "@babel/core": "^7.12.9"
+    "@maplibre/maplibre-react-native": "^9.0.1",
+    "@react-native-async-storage/async-storage": "1.18.2",
+    "@react-native-community/datetimepicker": "7.2.0",
+    "@react-native-community/netinfo": "9.3.10",
+    "@react-native-picker/picker": "2.4.10",
+    "@wq/app": "^2.0.0-alpha.2",
+    "@wq/map-gl": "^2.0.0-alpha.1",
+    "@wq/map-gl-native": "^2.0.0-alpha.2",
+    "@wq/material": "^2.0.0-alpha.1",
+    "@wq/material-native": "^2.0.0-alpha.2",
+    "expo": "^49.0.7",
+    "expo-dev-client": "~2.4.6",
+    "expo-document-picker": "~11.5.4",
+    "expo-image-picker": "~14.3.2",
+    "expo-location": "~16.1.0",
+    "react-native-gesture-handler": "~2.12.0",
+    "react-native-picker-select": "github:Expensify/react-native-picker-select#eae0585",
+    "react-native-safe-area-context": "4.6.3",
+    "react-native-screens": "~3.22.0"
   }
 }
