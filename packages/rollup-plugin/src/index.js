@@ -1,65 +1,6 @@
-const prefix = "\0wq-bundle:",
-    modules = {
-        react: {
-            name: "React",
-        },
-        "react/jsx-runtime": {
-            name: "jsxRuntime",
-        },
-        "react-dom": {
-            name: "ReactDOM",
-        },
-        "react-is": {
-            name: "ReactIs",
-        },
-        "prop-types": {
-            name: "PropTypes",
-        },
-        formik: {
-            name: "formik",
-        },
-        "@emotion/styled": {
-            name: "emStyled",
-        },
-        "@emotion/react": {
-            name: "emReact",
-        },
-        "@mui/utils": {
-            name: "muiUtils",
-        },
-        "@mui/material/utils": {
-            name: "muiMaterialUtils",
-        },
-        "@mui/material": {
-            name: "muiMaterial",
-        },
-        "react-map-gl": {
-            name: "ReactMapGL",
-            hasDefault: true,
-        },
-        "@mapbox/mapbox-gl-draw": {
-            name: "MapboxDraw",
-        },
-        "@wq/app": {
-            name: "app",
-        },
-        "@wq/react": {
-            name: "react",
-            hasDefault: true,
-        },
-        "@wq/material": {
-            name: "material",
-            hasDefault: true,
-        },
-        "@wq/map": {
-            name: "map",
-            hasDefault: true,
-        },
-        "@wq/map-gl": {
-            name: "mapgl",
-            hasDefault: true,
-        },
-    };
+import modules from "./modules.js";
+
+const prefix = "\0wq-bundle:";
 
 export default function wq() {
     return {
@@ -74,7 +15,6 @@ export default function wq() {
             if (modules[id]) {
                 return {
                     id: `${prefix}${id}`,
-                    syntheticNamedExports: `${modules[id].name}`,
                 };
             }
         },
@@ -83,23 +23,30 @@ export default function wq() {
                 return createVirtualModule(id.replace(prefix, ""));
             }
         },
+        enforce: "pre", // Vite
     };
 }
 
 function createVirtualModule(id) {
-    const { name, hasDefault } = modules[id];
+    const { name, hasDefault, exports } = modules[id],
+        exportStr = exports.join(", "),
+        importStr = exports
+            .map((exp) => `const { ${exp} } = ${name};`)
+            .join("\n");
     if (hasDefault) {
         return `import { modules } from './wq.js';
 const { '${id}': ${name} } = modules;
 const ${name}Plugin = ${name}.default;
 export default ${name}Plugin;
-export { ${name} };
+${importStr}
+export { ${exportStr} };
         `;
     } else {
         return `import { modules } from './wq.js';
 const { '${id}': ${name} } = modules;
 export default ${name};
-export { ${name} };
+${importStr}
+export { ${exportStr} };
         `;
     }
 }

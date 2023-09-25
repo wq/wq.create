@@ -1,33 +1,37 @@
 import { modules } from "./wq.js";
 
-const { react: React } = modules;
-
 const { "@wq/react": react } = modules;
+const { usePluginState } = react;
 
 const { "@wq/material": material } = modules;
+const { List } = material;
+const { ListItem } = material;
 
 const { "@mui/material": muiMaterial } = modules;
+const { Grid } = muiMaterial;
+
+const { "react/jsx-runtime": jsxRuntime } = modules;
+const { jsx } = jsxRuntime;
+const { jsxs } = jsxRuntime;
 
 function Test() {
-    const state = react.usePluginState("myPlugin");
-    return /*#__PURE__*/ React.createElement(
-        material.List,
-        null,
-        state.values.map((value) =>
-            /*#__PURE__*/ React.createElement(
-                material.ListItem,
-                {
-                    key: value.id,
-                },
-                value.label
-            )
-        ),
-        /*#__PURE__*/ React.createElement(
-            material.ListItem,
-            null,
-            /*#__PURE__*/ React.createElement(muiMaterial.Grid, null)
-        )
-    );
+    const state = usePluginState("myPlugin");
+    return /*#__PURE__*/ jsxs(List, {
+        children: [
+            state.values.map((value) =>
+                /*#__PURE__*/ jsx(
+                    ListItem,
+                    {
+                        children: value.label,
+                    },
+                    value.id
+                )
+            ),
+            /*#__PURE__*/ jsx(ListItem, {
+                children: /*#__PURE__*/ jsx(Grid, {}),
+            }),
+        ],
+    });
 }
 
 var input = {

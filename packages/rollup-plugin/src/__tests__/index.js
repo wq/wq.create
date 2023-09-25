@@ -18,7 +18,12 @@ test("plugin", async () => {
             plugins: [
                 wqBundle(),
                 babel({
-                    plugins: ["@babel/transform-react-jsx"],
+                    plugins: [
+                        [
+                            "@babel/transform-react-jsx",
+                            { runtime: "automatic" },
+                        ],
+                    ],
                     babelHelpers: "inline",
                 }),
                 prettier(),

@@ -1,3 +1,6 @@
 __tests__
 .eslintrc.cjs
+.prettierignore
+wq.js
+update_modules.*
 *.tgz
