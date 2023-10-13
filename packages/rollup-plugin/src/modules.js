@@ -121,7 +121,6 @@ const modules = {
             "exact",
             "checkPropTypes",
             "resetWarningCache",
-            "PropTypes",
         ],
         hasDefault: false,
     },

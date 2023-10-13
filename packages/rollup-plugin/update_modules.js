@@ -31,7 +31,9 @@ async function update_modules() {
             name:
                 depNames[name] ||
                 camelCase(name.replace(/\//g, "-").replace("@", "")),
-            exports: Object.keys(exports).filter((e) => e !== "default"),
+            exports: Object.keys(exports).filter(
+                (e) => e !== "default" && e !== depNames[name]
+            ),
             hasDefault,
         };
     });
