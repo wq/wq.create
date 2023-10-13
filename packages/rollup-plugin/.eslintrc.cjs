@@ -11,6 +11,7 @@ module.exports = {
     globals: {
         module: "readonly",
         process: "readonly",
+        global: "readonly",
         __dirname: "readonly",
     },
     parserOptions: {
