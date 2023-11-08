@@ -35,8 +35,8 @@ classifiers = [
     "Topic :: Software Development :: Pre-processors",
 ]
 dependencies = [
-    "wq.build>=2.0.0a1",
-    "xlsconv>=2.0.0a1,<2.1.0",
+    "wq.build>=2.0.0",
+    "xlsconv>=2.0.0,<2.1.0",
     "psycopg2-binary",
 ]
 
