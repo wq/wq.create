@@ -24,6 +24,16 @@
                             ],
                             "popup": "location",
                             "cluster": true
+                        },
+                        {
+                            "name": "All Locations",
+                            "type": "vector-tile",
+                            "layer": "location",
+                            "popup": "location",
+                            "identifyLayers": [
+                                "location-circle"
+                            ],
+                            "active": false
                         }
                     ]
                 },
@@ -38,12 +48,30 @@
                                 "geometry"
                             ],
                             "popup": "location"
+                        },
+                        {
+                            "name": "All Locations",
+                            "type": "vector-tile",
+                            "layer": "location",
+                            "popup": "location",
+                            "identifyLayers": [
+                                "location-circle"
+                            ],
+                            "active": false
                         }
                     ]
                 },
                 {
                     "mode": "edit",
-                    "layers": []
+                    "layers": [
+                        {
+                            "name": "All Locations",
+                            "type": "vector-tile",
+                            "layer": "location",
+                            "popup": "location",
+                            "active": false
+                        }
+                    ]
                 }
             ],
             "name": "location",
@@ -109,7 +137,17 @@
             "verbose_name": "test Project",
             "map": {
                 "mapId": "map",
-                "layers": []
+                "layers": [
+                    {
+                        "name": "Locations",
+                        "type": "vector-tile",
+                        "layer": "location",
+                        "popup": "location",
+                        "identifyLayers": [
+                            "location-circle"
+                        ]
+                    }
+                ]
             }
         }
     },
@@ -140,7 +178,8 @@
                 180,
                 70
             ]
-        ]
+        ],
+        "tiles": "/tiles/{z}/{x}/{y}.pbf"
     },
     "debug": true
 }

@@ -9,7 +9,7 @@ authors = [
 ]
 description = "Project scaffolding tools for creating a new application with the wq framework."
 readme = "README.md"
-requires-python = ">=3.7"
+requires-python = ">=3.8"
 license = {text = "MIT"}
 classifiers = [
     "Development Status :: 5 - Production/Stable",
@@ -18,16 +18,16 @@ classifiers = [
     "Natural Language :: English",
     "Programming Language :: JavaScript",
     "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.7",
     "Programming Language :: Python :: 3.8",
     "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
     "Framework :: Django",
-    "Framework :: Django :: 3.2",
     "Framework :: Django :: 4.0",
     "Framework :: Django :: 4.1",
     "Framework :: Django :: 4.2",
+    "Framework :: Django :: 5.0",
     "Topic :: Software Development :: Libraries :: Application Frameworks",
     "Topic :: Software Development :: Code Generators",
     "Topic :: Text Processing :: Markup :: HTML",
@@ -35,8 +35,8 @@ classifiers = [
     "Topic :: Software Development :: Pre-processors",
 ]
 dependencies = [
-    "wq.build>=2.0.0",
-    "xlsconv>=2.0.0,<2.1.0",
+    "wq.build>=2.1.0",
+    "xlsconv>=2.0.0,<2.2.0",
     "psycopg2-binary",
 ]
 

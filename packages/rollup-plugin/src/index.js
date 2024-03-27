@@ -1,10 +1,10 @@
 import modules from "./modules.js";
 
 const prefix = "\0wq-bundle:",
-   defaultConfig = {urlBase: "."};
+    defaultConfig = { urlBase: "." };
 
 export default function wq(config) {
-    const { urlBase } = {...defaultConfig,...config};
+    const { urlBase } = { ...defaultConfig, ...config };
     return {
         name: "@wq/rollup-plugin",
         resolveId(id) {

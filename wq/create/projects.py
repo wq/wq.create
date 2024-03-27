@@ -23,10 +23,10 @@ if os.sep not in template:
 
 
 if os.name == "nt":
-    NPX_COMMAND = "npx.cmd"
+    NPM_COMMAND = "npm.cmd"
     DEPLOY_SCRIPT = "deploy.bat"
 else:
-    NPX_COMMAND = "npx"
+    NPM_COMMAND = "npm"
     DEPLOY_SCRIPT = "./deploy.sh"
 
 
@@ -36,7 +36,8 @@ class StartProjectCommand(startproject.Command):
         parser.add_argument("--domain", help="Web Domain")
         parser.add_argument("--title", help="Site Title")
         parser.add_argument("--with-gis", help="Enable GeoDjango")
-        parser.add_argument("--with-npm", help="Enable NPM")
+        parser.add_argument("--with-npm", help="Enable NPM)")
+        parser.add_argument("--with-gunicorn", help="Enable Gunicorn")
         parser.add_argument("--wq-create-version", help="wq create version")
 
 
@@ -51,7 +52,12 @@ class StartProjectCommand(startproject.Command):
 @click.option(
     "--with-npm/--without-npm",
     default=None,
-    help="Enable NPM (& Create React App)",
+    help="Enable NPM (Vite with @wq/rollup-plugin)",
+)
+@click.option(
+    "--with-gunicorn/--with-apache",
+    default=None,
+    help="Use Gunicorn + Whitenoise instead of Apache WSGI",
 )
 def create(
     project_name,
@@ -60,6 +66,7 @@ def create(
     title=None,
     with_gis=None,
     with_npm=None,
+    with_gunicorn=None,
 ):
     """
     Start a new project with wq.app and wq.db.  A new Django project will be
@@ -74,10 +81,26 @@ def create(
 
     See https://wq.io/overview/setup for more tips on getting started with wq.
     """
-    do_create(project_name, destination, domain, title, with_gis, with_npm)
+    do_create(
+        project_name,
+        destination,
+        domain,
+        title,
+        with_gis,
+        with_npm,
+        with_gunicorn,
+    )
 
 
-def do_create(project_name, destination, domain, title, with_gis, with_npm):
+def do_create(
+    project_name,
+    destination,
+    domain,
+    title,
+    with_gis,
+    with_npm,
+    with_gunicorn,
+):
     any_prompts = False
 
     if project_name is None:
@@ -117,7 +140,14 @@ def do_create(project_name, destination, domain, title, with_gis, with_npm):
     if with_npm is None:
         any_prompts = True
         with_npm = click.confirm(
-            "Enable NPM / Create React App? (Requires Node.js)",
+            "Enable NPM / Vite + @wq/rollup-plugin? (Requires Node.js)",
+            default=False,
+        )
+
+    if with_gunicorn is None:
+        any_prompts = True
+        with_gunicorn = click.confirm(
+            "Enable Gunicorn + Whitenoise instead of Apache WSGI?",
             default=False,
         )
 
@@ -134,6 +164,7 @@ def do_create(project_name, destination, domain, title, with_gis, with_npm):
         wq_create_version=VERSION,
         with_gis=with_gis,
         with_npm=with_npm,
+        with_gunicorn=with_gunicorn,
     )
     call_command(StartProjectCommand(), *args, **kwargs)
 
@@ -143,43 +174,47 @@ def do_create(project_name, destination, domain, title, with_gis, with_npm):
             for dep in freeze.freeze():
                 print(dep, file=f)
 
+    os.remove(os.path.join(path, "app", "README.md"))
     if with_npm:
-        shutil.rmtree(os.path.join(path, "app"))
+        project_static_dir = os.path.join(path, "db", project_name, "static")
+        os.makedirs(project_static_dir, exist_ok=True)
+        shutil.move(os.path.join(path, "app"), project_static_dir)
         subprocess.check_call(
-            [
-                NPX_COMMAND,
-                "create-react-app",
-                project_name,
-                "--template",
-                "@wq",
-            ],
-            cwd=path,
+            [NPM_COMMAND, "init", "@wq", project_name], cwd=path
         )
         os.rename(
             os.path.join(path, project_name),
             os.path.join(path, "app"),
         )
-        for filename in ("index.html", "manifest.json"):
-            filepath = os.path.join(path, "app", "public", filename)
+        for filename in ("index.html", "vite.config.js"):
+            filepath = os.path.join(path, "app", filename)
             with open(filepath) as f:
                 content = f.read()
 
-            content = content.replace("{{ title }}", title)
-            content = content.replace("{{ project_name }}", project_name)
+            content = content.replace("Example Project", title)
+            content = content.replace("project", project_name)
 
             with open(filepath, "w") as f:
                 f.write(content)
-    else:
-        os.remove(os.path.join(path, "app", "README.md"))
+        subprocess.check_call(
+            [NPM_COMMAND, "install"], cwd=os.path.join(path, "app")
+        )
+
+    if with_gunicorn:
+        os.remove(os.path.join(path, "conf", f"{project_name}.conf"))
 
     flags = []
     if with_gis:
         flags.append("GIS")
     if with_npm:
         flags.append("NPM")
+    if with_gunicorn:
+        flags.append("Gunicorn")
 
-    if len(flags) == 3:
-        flag_summary = " with {0}, {1}, and {2} support".format(*flags)
+    if len(flags) > 2:
+        flag_summary = " with {first}, and {last} support".format(
+            first=", ".join(flags[:-1]), last=flags[-1]
+        )
     elif len(flags) == 2:
         flag_summary = " with {0} and {1} support".format(*flags)
     elif len(flags) == 1:

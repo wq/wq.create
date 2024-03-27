@@ -11,9 +11,9 @@ jobs:
     strategy:
       matrix:
         variant: [spatialite, postgis, npm]
-        python-version: ["3.11"]
-        django-version: [4.2.2]
-        drf-version: [3.14.0]
+        python-version: ["3.12"]
+        django-version: [5.0.3]
+        drf-version: [3.15.1]
     steps:
     - uses: actions/checkout@v2
       with:
@@ -25,15 +25,15 @@ jobs:
         python-version: ${{ matrix.python-version }}
     - name: Install dependencies
       run: |
-        python -m pip install --upgrade pip
+        python -m pip install --upgrade pip setuptools
         python -m pip install build
         python -m pip install flake8 pytest wheel
         python -m pip install django==${{ matrix.django-version }}
         python -m pip install djangorestframework==${{ matrix.drf-version }}
         python -m pip install xlsconv==2.0.0
-        python -m pip install wq.build==2.0.0
-        python -m pip install wq.app==2.0.0
-        python -m pip install wq.db==2.0.0
+        python -m pip install wq.build==2.1.0
+        python -m pip install wq.app==2.1.0
+        python -m pip install wq.db==2.1.0
     - name: Test build
       run: |
         python -m build
@@ -81,7 +81,7 @@ jobs:
         python-version: ["3.11"]
         node-version: [18]
         package:
-          - cra-template
+          - create
           - expo-template
           - rollup-plugin
     steps:

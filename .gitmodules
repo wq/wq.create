@@ -1,3 +1,6 @@
 [submodule "django_project"]
 	path = wq/create/django_project
 	url = https://github.com/wq/wq-django-template.git
+[submodule "packages/create/template"]
+	path = packages/create/template
+	url = https://github.com/wq/wq-vite-template.git

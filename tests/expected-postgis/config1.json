@@ -46,7 +46,8 @@
                 180,
                 70
             ]
-        ]
+        ],
+        "tiles": "/tiles/{z}/{x}/{y}.pbf"
     },
     "debug": true
 }

@@ -1,0 +1,19 @@
+{
+  "name": "@wq/create",
+  "version": "2.1.1",
+  "bin": {
+    "wq-create": "./index.js"
+  },
+  "files": [
+    "template"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wq/wq.create.git",
+    "directory": "packages/create"
+  },
+  "bugs": {
+    "url": "https://github.com/wq/wq.create/issues"
+  },
+  "homepage": "https://wq.io/@wq/create"
+}

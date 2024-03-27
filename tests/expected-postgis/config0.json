@@ -28,6 +28,37 @@
             },
             "name": "index"
         },
+        "category": {
+            "icon": "config",
+            "description": "Manage available categories",
+            "section": "Admin",
+            "order": 100,
+            "show_in_index": "can_change",
+            "cache": "all",
+            "background_sync": false,
+            "name": "category",
+            "url": "categories",
+            "list": true,
+            "form": [
+                {
+                    "name": "name",
+                    "label": "Name",
+                    "bind": {
+                        "required": true
+                    },
+                    "wq:length": 255,
+                    "type": "string"
+                },
+                {
+                    "name": "description",
+                    "label": "Description",
+                    "type": "text"
+                }
+            ],
+            "verbose_name": "category",
+            "verbose_name_plural": "categories",
+            "label_template": "{{name}}"
+        },
         "observation": {
             "icon": "list",
             "description": "View and submit photos on map",
@@ -48,6 +79,16 @@
                             ],
                             "popup": "observation",
                             "cluster": true
+                        },
+                        {
+                            "name": "All Observations",
+                            "type": "vector-tile",
+                            "layer": "observation",
+                            "popup": "observation",
+                            "identifyLayers": [
+                                "observation-circle"
+                            ],
+                            "active": false
                         }
                     ]
                 },
@@ -62,6 +103,16 @@
                                 "geometry"
                             ],
                             "popup": "observation"
+                        },
+                        {
+                            "name": "All Observations",
+                            "type": "vector-tile",
+                            "layer": "observation",
+                            "popup": "observation",
+                            "identifyLayers": [
+                                "observation-circle"
+                            ],
+                            "active": false
                         }
                     ]
                 },
@@ -124,37 +175,6 @@
                     "type": "geopoint"
                 }
             ]
-        },
-        "category": {
-            "icon": "config",
-            "description": "Manage available categories",
-            "section": "Admin",
-            "order": 100,
-            "show_in_index": "can_change",
-            "cache": "all",
-            "background_sync": false,
-            "name": "category",
-            "url": "categories",
-            "list": true,
-            "form": [
-                {
-                    "name": "name",
-                    "label": "Name",
-                    "bind": {
-                        "required": true
-                    },
-                    "wq:length": 255,
-                    "type": "string"
-                },
-                {
-                    "name": "description",
-                    "label": "Description",
-                    "type": "text"
-                }
-            ],
-            "verbose_name": "category",
-            "verbose_name_plural": "categories",
-            "label_template": "{{name}}"
         }
     },
     "site_title": "test Project",
@@ -184,7 +204,8 @@
                 180,
                 70
             ]
-        ]
+        ],
+        "tiles": "/tiles/{z}/{x}/{y}.pbf"
     },
     "debug": true
 }

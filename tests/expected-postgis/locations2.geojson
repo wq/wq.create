@@ -1,0 +1,29 @@
+{
+    "count": 1,
+    "next": null,
+    "previous": null,
+    "page": 1,
+    "pages": 1,
+    "per_page": 50,
+    "multiple": false,
+    "type": "FeatureCollection",
+    "features": [
+        {
+            "id": 1,
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -93.28,
+                    44.98
+                ]
+            },
+            "properties": {
+                "name": "Site 1",
+                "type": "water",
+                "label": "Site 1",
+                "type_label": "Water"
+            }
+        }
+    ]
+}
