@@ -1,6 +1,7 @@
-from pkg_resources import get_distribution, DistributionNotFound
+from importlib.metadata import version, PackageNotFoundError
+
 
 try:
-    VERSION = get_distribution("wq.create").version
-except DistributionNotFound:
+    VERSION = version("wq.build")
+except PackageNotFoundError:
     VERSION = "0.0.0"

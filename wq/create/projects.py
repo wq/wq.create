@@ -5,7 +5,7 @@ import shutil
 import subprocess
 from django.core.management import call_command
 from django.core.management.commands import startproject
-from pkg_resources import resource_filename
+from importlib.resources import files
 from .version import VERSION
 
 try:
@@ -14,13 +14,7 @@ except ImportError:
     pass
 
 
-template = resource_filename("wq.create", "django_project")
-# resource_filename not returning absolute path after pip install
-if os.sep not in template:
-    import wq as wq_module
-
-    template = wq_module.__path__[0] + os.sep + template
-
+template = str(files("wq.create").joinpath("django_project"))
 
 if os.name == "nt":
     NPM_COMMAND = "npm.cmd"
