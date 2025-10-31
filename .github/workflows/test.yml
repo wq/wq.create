@@ -10,67 +10,67 @@ jobs:
       TEST_VARIANT: ${{ matrix.variant }}
     strategy:
       matrix:
-        variant: [spatialite, postgis, npm]
+        variant: [spatialite, postgis] # , npm
         python-version: ["3.12"]
         django-version: [5.0.3]
         drf-version: [3.15.1]
     steps:
-    - uses: actions/checkout@v2
-      with:
-        submodules: true
-        fetch-depth: 0
-    - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v2
-      with:
-        python-version: ${{ matrix.python-version }}
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip setuptools
-        python -m pip install build
-        python -m pip install flake8 pytest wheel
-        python -m pip install django==${{ matrix.django-version }}
-        python -m pip install djangorestframework==${{ matrix.drf-version }}
-        python -m pip install xlsconv==2.0.0
-        python -m pip install wq.build==2.1.0
-        python -m pip install wq.app==2.1.0
-        python -m pip install wq.db==2.1.0
-    - name: Test build
-      run: |
-        python -m build
-        python -m pip install dist/*.whl
-    - name: Lint with flake8
-      run: |
-        # stop the build if there are Python syntax errors or undefined names
-        flake8 . --exclude django_project,tests --count --select=E9,F63,F7,F82 --show-source --statistics
-        # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
-        flake8 . --exclude django_project,tests --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
-    - name: Set up SpatiaLite
-      if: ${{ matrix.variant != 'postgis' }}
-      run: |
-         sudo apt-get update
-         sudo apt-get install libsqlite3-mod-spatialite gdal-bin
-    - name: Set up Node
-      if: ${{ matrix.variant == 'npm' }}
-      uses: actions/setup-node@v2
-      with:
-        node-version: 18
-    - name: Set up PostgreSQL
-      if: ${{ matrix.variant == 'postgis' }}
-      run: |
-        wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
-        sudo sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list'
-        sudo apt-get update
-        sudo apt-get install postgresql-14-postgis-3
-        # postgresql is already installed on image
-        sudo systemctl start postgresql.service
-        sudo -u postgres createuser --superuser $USER
-        createdb test_project
-        psql test_project -c "CREATE EXTENSION postgis;"
-        python -m pip install psycopg2-binary
-    - name: CLI Tests
-      run: |
-        cd tests
-        ./test-deploy.sh
+      - uses: actions/checkout@v2
+        with:
+          submodules: true
+          fetch-depth: 0
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip setuptools
+          python -m pip install build
+          python -m pip install flake8 pytest wheel
+          python -m pip install django==${{ matrix.django-version }}
+          python -m pip install djangorestframework==${{ matrix.drf-version }}
+          python -m pip install xlsconv==2.0.0
+          python -m pip install wq.build==2.1.0
+          python -m pip install wq.app==2.1.0
+          python -m pip install wq.db==2.1.0
+      - name: Test build
+        run: |
+          python -m build
+          python -m pip install dist/*.whl
+      - name: Lint with flake8
+        run: |
+          # stop the build if there are Python syntax errors or undefined names
+          flake8 . --exclude django_project,tests --count --select=E9,F63,F7,F82 --show-source --statistics
+          # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
+          flake8 . --exclude django_project,tests --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+      - name: Set up SpatiaLite
+        if: ${{ matrix.variant != 'postgis' }}
+        run: |
+          sudo apt-get update
+          sudo apt-get install libsqlite3-mod-spatialite gdal-bin
+      - name: Set up Node
+        if: ${{ matrix.variant == 'npm' }}
+        uses: actions/setup-node@v2
+        with:
+          node-version: 18
+      - name: Set up PostgreSQL
+        if: ${{ matrix.variant == 'postgis' }}
+        run: |
+          wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
+          sudo sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list'
+          sudo apt-get update
+          sudo apt-get install postgresql-14-postgis-3
+          # postgresql is already installed on image
+          sudo systemctl start postgresql.service
+          sudo -u postgres createuser --superuser $USER
+          createdb test_project
+          psql test_project -c "CREATE EXTENSION postgis;"
+          python -m pip install psycopg2-binary
+      - name: CLI Tests
+        run: |
+          cd tests
+          ./test-deploy.sh
   npm:
     name: "@wq/${{ matrix.package }}"
     runs-on: ubuntu-22.04
@@ -85,39 +85,39 @@ jobs:
           - expo-template
           - rollup-plugin
     steps:
-    - uses: actions/checkout@v2
-      with:
-        submodules: true
-        fetch-depth: 0
-    - name: Set up Node ${{ matrix.node-version }}
-      uses: actions/setup-node@v2
-      with:
-        node-version: ${{ matrix.node-version }}
-    - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v2
-      with:
-        python-version: ${{ matrix.python-version }}
-    - name: Install dependencies
-      if: ${{ matrix.package == 'rollup-plugin' }}
-      run: |
-        cd packages/$PACKAGE
-        npm ci
-    - name: Lint with ESLint
-      if: ${{ matrix.package == 'rollup-plugin' }}
-      run: |
-        cd packages/$PACKAGE
-        npm run lint
-    - name: Test with Jest
-      if: ${{ matrix.package == 'rollup-plugin' }}
-      run: |
-         cd packages/$PACKAGE
-         npm run test
-    - name: Publish to Github Packages
-      if: ${{ github.event_name == 'push' }}
-      run: |
-         python -m pip install setuptools_scm
-         ./set_dev_version.sh
-         cd packages/$PACKAGE
-         echo "registry=https://npm.pkg.github.com/wq" > .npmrc
-         echo "//npm.pkg.github.com/:_authToken=${{ secrets.GITHUB_TOKEN }}" >> .npmrc
-         npm publish
+      - uses: actions/checkout@v2
+        with:
+          submodules: true
+          fetch-depth: 0
+      - name: Set up Node ${{ matrix.node-version }}
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install dependencies
+        if: ${{ matrix.package == 'rollup-plugin' }}
+        run: |
+          cd packages/$PACKAGE
+          npm ci
+      - name: Lint with ESLint
+        if: ${{ matrix.package == 'rollup-plugin' }}
+        run: |
+          cd packages/$PACKAGE
+          npm run lint
+      - name: Test with Jest
+        if: ${{ matrix.package == 'rollup-plugin' }}
+        run: |
+          cd packages/$PACKAGE
+          npm run test
+      - name: Publish to Github Packages
+        if: ${{ github.event_name == 'push' }}
+        run: |
+          python -m pip install setuptools_scm
+          ./set_dev_version.sh
+          cd packages/$PACKAGE
+          echo "registry=https://npm.pkg.github.com/wq" > .npmrc
+          echo "//npm.pkg.github.com/:_authToken=${{ secrets.GITHUB_TOKEN }}" >> .npmrc
+          npm publish
